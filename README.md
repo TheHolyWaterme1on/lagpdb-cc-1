@@ -20,7 +20,7 @@ If you wish to add your own command, feel free to open a PR aswell. Note that I 
 If you are adding a new CC, please look through my code how I format it and try to stick to it as close as possible (you do not have to use `.CmdArgs` if you don't want to).
 
 ## Disclaimer (aka legal shit nobody takes the time to actually read)
-The YAGPDB creator, staff, and/or support are not responsible for any difficulties caused by these custom commansd.
+The YAGPDB creator, staff, and/or support are not responsible for any difficulties caused by these custom commands.
 These commands are not guaranteed to be working (although I thouroughly tested them).
 
 ## Still need help?
