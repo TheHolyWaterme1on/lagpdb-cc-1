@@ -9,6 +9,14 @@
 */}}
 
 
+{{/*CONFIG AREA START*/}}
+
+{{$reports := 750730537571975298}} {{/*The channel where your reports are logged into.*/}}
+{{$reportDiscussion := 750099460314628176}} {{/*Your channel where users talk to staff*/}}
+
+{{/*CONFIG AREA END*/}}
+
+
 {{/*ACTUAL CODE DO NOT TOUCH UNLESS YOU KNOW WHAT YOU ARE DOING*/}}
 {{if not (ge (len .CmdArgs) 3)}}
     ```{{.Cmd}} <Message:ID> <Key:Text> <Reason:Text>```

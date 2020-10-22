@@ -10,14 +10,21 @@
     Credit: ye olde boi#7325 U-ID:665243449405997066
 */}}
 
+
+{{/*CONFIG AREA START*/}}
+
+{{$reports := 750730537571975298}} {{/*The channel where your reports are logged into.*/}}
+{{$reportDiscussion := 750099460314628176}} {{/*Your channel where users talk to staff*/}}
+
+{{/*CONFIG AREA END*/}}
+
 {{/*ACTUAL CODE DO NOT TOUCH UNLESS YOU KNOW WHAT YOU DO*/}}
 {{if .Reaction}}
 {{if eq .ReactionAdded true}}
-{{$reports := ((dbGet 2000 "reportLog").Value|toInt64)}}
+
 {{if eq .Reaction.ChannelID $reports}} {{/*Validation steps*/}}
 
-{{$reportDiscussion := ((dbGet 2000 "reportDiscussion").Value|toInt64)}}
-{{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}
+
 {{$user := (index (reFindAllSubmatches `\A(?:<@!?)?(\d{17,19})(?:>)?` .ReactionMessage.Content) 0 1|toInt64)}}
 {{$userReportString := ((dbGet 2000 (printf "userReport%d" .User.ID)).Value|str)}}
 {{$userCancelString := ((dbGet 2000 (printf "userCancel%d" .User.ID)).Value|str)}}
