@@ -30,7 +30,7 @@
 {{addReactions "❗" "👌"}}
 {{dbSet $user "key" "used"}}
 {{else if eq .Reaction.Emoji.Name "🛡️"}}{{/*Taking care*/}}
-{{sendMessage $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user $mod)}}
+{{sendMessage $reports $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user $mod)}}
 {{deleteAllMessageReactions nil .Reaction.MessageID}}
 {{editMessage $reports .Reaction.MessageID (printf "%s\n **Under investigation.** %s \nDismiss with ❌ or resolve with 👍." $userReportString $mod)}}
 {{addReactions "❌" "👍"}}
