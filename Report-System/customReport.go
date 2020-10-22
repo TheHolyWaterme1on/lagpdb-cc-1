@@ -8,13 +8,22 @@
 
     Credit: ye olde boi#7325 U-ID:665243449405997066
 */}}
+
 {{/*CONFIG AREA START*/}}
+
 {{$reports := 750730537571975298}} {{/*The channel where your reports are logged into.*/}}
+{{$reportDiscussion := 750099460314628176}} {{/*Your channel where users talk to staff*/}}
+
 {{/*CONFIG AREA END*/}}
+
+
+{{/*ACTUAL CODE DO NOT TOUCH UNLESS YOU KNOW WHAT YOU ARE DOING*/}}
 {{if not (ge (len .CmdArgs) 2)}}
     ```{{.Cmd}} <User:Mention/ID> <Reason:Text>```
     Not enough arguments passed.
 {{else}}
+    {{dbSet 2000 "reportLog" $reports}}
+    {{dbSet 2000 "reportDiscussion" $reportDiscussion}}
     {{$secret := adjective}}
     {{$s := execAdmin "log"}}
     {{$user := userArg (index .CmdArgs 0)}}

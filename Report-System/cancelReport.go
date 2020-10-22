@@ -8,17 +8,13 @@
     Credit: ye olde boi#7325 U-ID:665243449405997066
 */}}
 
-{{/*CONFIG AREA START*/}}
-
-{{$reports := 750730537571975298}} {{/*The channel where your reports are logged into.*/}}
-
-{{/*CONFIG AREA END*/}}
 
 {{/*ACTUAL CODE DO NOT TOUCH UNLESS YOU KNOW WHAT YOU ARE DOING*/}}
 {{if not (ge (len .CmdArgs) 3)}}
     ```{{.Cmd}} <Message:ID> <Key:Text> <Reason:Text>```
     Not enough arguments passed.
 {{else}}
+    {{$reports := ((dbGet 2000 "reportLog").Value|toInt64)}}
     {{$dbValue := (dbGet .User.ID "key").Value|str}}
     {{$reportMessage := (index .CmdArgs 0)}}
     {{if (reFind (printf `\A<@!?%d>` .User.ID) (getMessage $reports $reportMessage).Content)}} 
