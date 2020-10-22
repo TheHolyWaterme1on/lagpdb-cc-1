@@ -26,7 +26,7 @@
 {{if eq .Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
 {{sendMessage $reportDiscussion (printf "<@%d>: Your report has been dismissed. %s" $user $mod)}}
 {{deleteAllMessageReactions nil .Reaction.MessageID}}
-{{editMessage $reports .Reaction.MessageID (printf "%s\n **Report dismissed.** %s \nWarn for `false report` with ❗ or finish without warning with 👌.") $userReportString $mod}}
+{{editMessage $reports .Reaction.MessageID (printf "%s\n **Report dismissed.** %s \nWarn for `false report` with ❗ or finish without warning with 👌." $userReportString $mod)}}
 {{addReactions "❗" "👌"}}
 {{dbSet $user "key" "used"}}
 {{else if eq .Reaction.Emoji.Name "🛡️"}}{{/*Taking care*/}}
