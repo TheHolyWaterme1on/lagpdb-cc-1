@@ -13,9 +13,9 @@
 {{/*ACTUAL CODE DO NOT TOUCH UNLESS YOU KNOW WHAT YOU DO*/}}
 {{if .Reaction}}
 {{if eq .ReactionAdded true}}
+{{$reports := ((dbGet 2000 "reportLog").Value|toInt64)}}
 {{if eq .Channel.ID $reports}} {{/*Validation steps*/}}
 
-{{$reports := ((dbGet 2000 "reportLog").Value|toInt64)}}
 {{$reportDiscussion := ((dbGet 2000 "reportDiscussion").Value|toInt64)}}
 {{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}
 {{$user := (index (reFindAllSubmatches `\A(?:<@!?)?(\d{17,19})(?:>)?` .ReactionMessage.Content) 0 1|toInt64)}}
