@@ -14,7 +14,7 @@
 {{if .Reaction}}
 {{if eq .ReactionAdded true}}
 {{$reports := ((dbGet 2000 "reportLog").Value|toInt64)}}
-{{if eq .Channel.ID $reports}} {{/*Validation steps*/}}
+{{if eq .Reaction.ChannelID $reports}} {{/*Validation steps*/}}
 
 {{$reportDiscussion := ((dbGet 2000 "reportDiscussion").Value|toInt64)}}
 {{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}
