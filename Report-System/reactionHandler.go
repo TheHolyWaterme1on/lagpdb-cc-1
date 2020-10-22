@@ -19,8 +19,8 @@
 {{$reportDiscussion := ((dbGet 2000 "reportDiscussion").Value|toInt64)}}
 {{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}
 {{$user := (index (reFindAllSubmatches `\A(?:<@!?)?(\d{17,19})(?:>)?` .ReactionMessage.Content) 0 1|toInt64)}}
-{{$userReportString := ((dbGet 2000 (print "userReport-" $user)).Value|str)}}
-{{$userCancelString := ((dbGet 2000 (print "userCancel-" $user)).Value|str)}}
+{{$userReportString := ((dbGet 2000 (printf "userReport%d" .User.ID)).Value|str)}}
+{{$userCancelString := ((dbGet 2000 (printf "userCancel%d" .User.ID)).Value|str)}}
 {{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}} {{/*Set some vars, cutting down on DB stuff, Readability shit*/}}
 
 {{if eq .Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}

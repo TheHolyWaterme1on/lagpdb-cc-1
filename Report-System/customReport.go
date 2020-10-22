@@ -31,7 +31,7 @@
     {{$reportGuide := (printf "\nDismiss report with ❌, take action with 🛡️, or request more background information with ⚠️")}}
     {{$userReportString := (printf  "<@%d> reported <@%d> in <#%d> for: `%s` \n Last 100 messages: <%s>" .User.ID $user.ID .Channel.ID $reason $s)}}
     {{dbSet 2000 "reportGuideBasic" $reportGuide}}
-    {{dbSet 2000 (print "userReport-" .User.ID) $userReportString}}
+    {{dbSet 2000 (printf "userReport%d" .User.ID) $userReportString}}
     {{$x := sendMessageRetID $reports (printf "%s %s" $userReportString $reportGuide)}}
     {{addMessageReactions $reports $x "❌" "🛡️" "⚠️"}}
     User reported to the proper authorites!

@@ -28,7 +28,7 @@
                     {{$cancelGuide := (printf "\nDeny request with 🚫, accept with ✅, or request more information with ⚠️")}}
                     {{dbSet 2000 "cancelGuideBasic" $cancelGuide}}
                     {{$userCancelString := (printf "%s \n<@%d> requested cancellation of this report due to: `%s`" .User.ID $reason)}}
-                    {{dbSet 2000 (print "userCancel-" .User.ID) $userCancelString}}
+                    {{dbSet 2000 (printf "userCancel%d" .User.ID) $userCancelString}}
                     {{editMessage $reports $reportMessage (printf "%s %s. %s" $userReportString $userCancelString $cancelGuide)}}
                     Cancellation requested.
                     {{deleteAllMessageReactions $reports $reportMessage}}
