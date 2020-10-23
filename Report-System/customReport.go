@@ -3,15 +3,16 @@
     Reactions to make things easier for staff.
     This custom command is basically the native report-command, but adds some back-end functionalites in order for the rest to work :)
 
+    Usage: `-ru <User:Mention/ID> <Reason:Text>`
 
-    Recommended Trigger type and trigger: Regex; \A-r(eport)?u(ser)?(\s+|\z)
+    Recommended Trigger type and trigger: Regex trigger with trigger `\A-r(eport)?u(ser)?(\s+|\z)`
 
-    Credit: ye olde boi#7325 U-ID:665243449405997066
+    Created by: Olde#7325 U-ID:665243449405997066
 */}}
 
 {{/*CONFIG AREA START*/}}
 
-{{$reports := 750730537571975298}} {{/*The channel where your reports are logged into.*/}}
+{{$reportLog := 750730537571975298}} {{/*The channel where your reports are logged into.*/}}
 {{$reportDiscussion := 750099460314628176}} {{/*Your channel where users talk to staff*/}}
 
 {{/*CONFIG AREA END*/}}
@@ -22,7 +23,7 @@
     ```{{.Cmd}} <User:Mention/ID> <Reason:Text>```
     Not enough arguments passed.
 {{else}}
-    {{dbSet 2000 "reportLog" $reports}}
+    {{dbSet 2000 "reportLog" $reportLog}}
     {{dbSet 2000 "reportDiscussion" $reportDiscussion}}
     {{$secret := adjective}}
     {{$s := execAdmin "log"}}
@@ -32,8 +33,8 @@
     {{$userReportString := (printf  "<@%d> reported <@%d> in <#%d> for: `%s` \n Last 100 messages: <%s>" .User.ID $user.ID .Channel.ID $reason $s)}}
     {{dbSet 2000 "reportGuideBasic" $reportGuide}}
     {{dbSet 2000 (printf "userReport%d" .User.ID) $userReportString}}
-    {{$x := sendMessageRetID $reports (printf "%s %s" $userReportString $reportGuide)}}
-    {{addMessageReactions $reports $x "❌" "🛡️" "⚠️"}}
+    {{$x := sendMessageRetID $reportLog (printf "%s %s" $userReportString $reportGuide)}}
+    {{addMessageReactions $reportLog $x "❌" "🛡️" "⚠️"}}
     User reported to the proper authorites!
     {{dbSet .User.ID "key" $secret}}
     {{sendDM (printf "User reported to the proper authorities! If you wish to cancel your report, simply type `-cancelr %d %s` in any channel.\n A reason is required." $x $secret)}}
