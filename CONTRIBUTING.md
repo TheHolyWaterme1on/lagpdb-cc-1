@@ -61,6 +61,6 @@ That's all you need to do! Thanks for contributing!
 *Note: I do not require any of these items in your pull request, only the things stated above*
 
 This is the guideline I use for the CCs I create. I may refactor your code when I'm doing a routine cleanup, so to avoid any confusion over what I am doing:
-* `print` or `printf` for string concatenation rather than `joinStr` - joinStrt should generally be only used for joining a string slice.
+* `print` or `printf` for string concatenation rather than `joinStr` - joinStr should generally be only used for joining a string slice.
 * spaces after `{{` and `}}` (only one, no spaces after `(` and `)`)
 * Printing the error message like a native error message
