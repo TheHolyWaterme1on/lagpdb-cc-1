@@ -76,7 +76,7 @@
 {{addReactions "🏳️"}}
 {{else if eq .Reaction.Emoji.Name "👌"}}
 {{deleteAllMessageReactions nil .Reaction.MessageID}}
-{{editMessage $reports .Reaction.MessageID (printf "%s \n **Report dismissed. No action taken.** 5s" $userReportString $mod)}}
+{{editMessage $reports .Reaction.MessageID (printf "%s \n **Report dismissed. No action taken.** %s" $userReportString $mod)}}
 {{else if eq .Reaction.Emoji.Name "🏳️"}}
 {{deleteMessageReaction nil .Reaction.MessageID .User.ID "🏳️"}}
 {{end}}{{end}}{{end}}{{end}}
