@@ -22,17 +22,17 @@
     ```{{.Cmd}} <Message:ID> <Key:Text> <Reason:Text>```
     Not enough arguments passed.
 {{else}}
-    {{$reports := ((dbGet 2000 "reportLog").Value|toInt64)}}
     {{$dbValue := (dbGet .User.ID "key").Value|str}}
-    {{$reportMessage := (index .CmdArgs 0)}}
-    {{if (reFind (printf `\A<@!?%d>` .User.ID) (getMessage $reports $reportMessage).Content)}} 
+    {{$reportMessage := ((index .CmdArgs 0)|toInt64)}}
+    {{$reportMessageContent := (getMessage $reports $reportMessage).Content}}
+    {{if (reFind (printf `\A<@!?%d>` .User.ID) $reportMessageContent)}} 
             {{if eq "used" $dbValue}}
                 Your latest report has already been cancelled!
             {{else}}
             {{if eq (index .CmdArgs 1|str) $dbValue}}
                 {{if ge (len .CmdArgs) 3}}
                     {{$reason := joinStr " " (slice .CmdArgs 2)}}
-                    {{$userReportString := (dbGet 2000 (print "userString-" .User.ID).Value)}}
+                    {{$userReportString := (dbGet 2000 (printf "UserCancel%d" .User.ID)).Value}}
                     {{$cancelGuide := (printf "\nDeny request with 🚫, accept with ✅, or request more information with ⚠️")}}
                     {{dbSet 2000 "cancelGuideBasic" $cancelGuide}}
                     {{$userCancelString := (printf "%s \n<@%d> requested cancellation of this report due to: `%s`" .User.ID $reason)}}
