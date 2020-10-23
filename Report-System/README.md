@@ -20,11 +20,11 @@ These CCs allow you to create a report system with the ability for users to requ
 
 ## The Commands
 ### reactionHandler.go
-[reactionHandler.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/reactionHandler.go) is the reaction listener and manages the editing of the report messages and user notifications. It is really fast. Like, *really* fast. If you react too fast on the message, it might break. Stay calm, nothing can happen. The report is safe as soon as the command is executed.
+[reactionHandler.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/reactionHandler.go) is the reaction listener and manages the editing of the report messages and user notifications. It is very fast. Like, *really* fast. If you react too eager on the message, it might break. Stay calm, nothing can happen. The report is safe as soon as the command is executed.
 
 ### customReport.go
 [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) manages the logging of the channel reported in, sends the reporting user a DM on how to cancel their report, sends the report to the according channel and primes this message with a guide and reactions.
-This command tends to be rather slow, due to the massive priming of database entries and loads of messages and variables required. Compared to other commands with the same amount of DB and messaging, it still is fast.
+This command tends to be rather slow, due to the massive priming of database entries and loads of messages and variables required. Compared to other commands with the same amount of DB and messaging, it still is on the faster end.
 
 ### cancelReport.go
 [cancelReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/cancelReport.go) manages the cancellation requests. It still utilizes some database functions, but less than `customReport.go`. It primes the report message with the note that this report has a pending cancellation request and initializes another reaction menu, as well as a guide for that.
