@@ -69,7 +69,7 @@
 {{ editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report resolved.** %s" $userReportString $mod) }}
 {{ addReactions "🏳️" }}
 {{ else if eq .Reaction.Emoji.Name "❗" }}
-{{ exec "warn" $user "False Report." }}
+{{ $silent := exec "warn" $user "False Report." }}
 {{ deleteAllMessageReactions nil .Reaction.MessageID }}
 {{ editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report dismissed. Warned for False report.** %s" $userReportString $mod) }}
 {{ addReactions "🏳️" }}
