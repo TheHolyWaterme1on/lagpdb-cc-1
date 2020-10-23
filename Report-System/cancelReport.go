@@ -32,12 +32,12 @@
             {{if eq (index .CmdArgs 1|str) $dbValue}}
                 {{if ge (len .CmdArgs) 3}}
                     {{$reason := joinStr " " (slice .CmdArgs 2)}}
-                    {{$userReportString := (dbGet 2000 (printf "UserCancel%d" .User.ID)).Value}}
-                    {{$cancelGuide := (printf "\nDeny request with 🚫, accept with ✅, or request more information with ⚠️")}}
+                    {{$userReportString := (dbGet 2000 (printf "userReport%d" .User.ID)).Value|str}}
+                    {{$cancelGuide := (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️")}}
                     {{dbSet 2000 "cancelGuideBasic" $cancelGuide}}
-                    {{$userCancelString := (printf "%s \n<@%d> requested cancellation of this report due to: `%s`" .User.ID $reason)}}
+                    {{$userCancelString := (printf "<@%d> requested cancellation of this report due to: `%s`" .User.ID $reason)}}
                     {{dbSet 2000 (printf "userCancel%d" .User.ID) $userCancelString}}
-                    {{editMessage $reports $reportMessage (printf "%s %s. %s" $userReportString $userCancelString $cancelGuide)}}
+                    {{editMessage $reports $reportMessage (printf "%s \n %s. \n %s" $userReportString $userCancelString $cancelGuide)}}
                     Cancellation requested.
                     {{deleteAllMessageReactions $reports $reportMessage}}
                     {{addMessageReactions $reports $reportMessage "🚫" "✅" "⚠️"}}

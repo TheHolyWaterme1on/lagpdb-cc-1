@@ -26,8 +26,8 @@
 
 {{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}
 {{$user := (index (reFindAllSubmatches `\A(?:<@!?)?(\d{17,19})(?:>)?` .ReactionMessage.Content) 0 1|toInt64)}}
-{{$userReportString := ((dbGet 2000 (printf "userReport%d" .User.ID)).Value|str)}}
-{{$userCancelString := ((dbGet 2000 (printf "userCancel%d" .User.ID)).Value|str)}}
+{{$userReportString := ((dbGet 2000 (printf "userReport%d" $user)).Value|str)}}
+{{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user)).Value|str)}}
 {{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}} {{/*Set some vars, cutting down on DB stuff, Readability shit*/}}
 
 {{if eq .Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
@@ -37,7 +37,7 @@
 {{addReactions "❗" "👌"}}
 {{dbSet $user "key" "used"}}
 {{else if eq .Reaction.Emoji.Name "🛡️"}}{{/*Taking care*/}}
-{{sendMessage $reports $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user $mod)}}
+{{sendMessage $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user $mod)}}
 {{deleteAllMessageReactions nil .Reaction.MessageID}}
 {{editMessage $reports .Reaction.MessageID (printf "%s\n **Under investigation.** %s \nDismiss with ❌ or resolve with 👍." $userReportString $mod)}}
 {{addReactions "❌" "👍"}}
