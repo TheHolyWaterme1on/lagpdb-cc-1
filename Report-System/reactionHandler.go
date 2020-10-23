@@ -19,8 +19,7 @@
 
 {{/*ACTUAL CODE DO NOT TOUCH UNLESS YOU KNOW WHAT YOU DO*/}}
 {{if .Reaction}}
-{{if eq .ReactionAdded true}}
-
+{{if .ReactionAdded}}
 {{if eq .Reaction.ChannelID $reports}} {{/*Validation steps*/}}
 
 
