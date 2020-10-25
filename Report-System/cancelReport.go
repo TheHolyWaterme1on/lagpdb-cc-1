@@ -40,7 +40,7 @@
                     {{ $userCancelString := (printf "<@%d> requested cancellation of this report due to: `%s`" .User.ID $reason) }}
                     {{ dbSet 2000 (printf "userCancel%d" .User.ID) $userCancelString }}
                     {{ editMessage $reportLog $reportMessage (printf "%s \n %s. \n %s" $userReportString $userCancelString $cancelGuide) }}
-                    Cancellation requested.
+                    Cancellation requested, have a nice day!
                     {{ deleteAllMessageReactions $reportLog $reportMessage }}
                     {{ addMessageReactions $reportLog $reportMessage "🚫" "✅" "⚠️" }}
                     {{ dbSet .User.ID "key" "used" }}
