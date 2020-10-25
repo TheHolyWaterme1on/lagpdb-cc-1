@@ -7,7 +7,7 @@
     
     Recommended Trigger type and trigger: Regex trigger with trigger `\A-c(ancel)?r(eport)?(\s+|\z)`
 
-    Created by: Olde#7325 U-ID:665243449405997066
+    Created by: Olde#7325 / BoomBoomer#4200
 */ }}
 
 
