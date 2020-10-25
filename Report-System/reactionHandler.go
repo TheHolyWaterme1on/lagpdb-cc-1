@@ -7,7 +7,7 @@
 
     Recommended Trigger type and trigger: Reaction; added and removed reactions.
 
-    Created by: Olde#7325 / BoomBoomer#4200
+    Created by: Olde#7325 / Idea by: BoomBoomer#4200
 */ }}
 
 {{ /*CONFIG AREA START*/ }}
