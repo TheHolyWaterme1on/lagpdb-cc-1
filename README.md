@@ -10,8 +10,17 @@ Some custom commands are not standalone, but this will be pointed out in the fol
 
 ## What custom commands do you have?
 (This list will be updated soon™️)
-  
-Currently I only have my report system added here.
+<details>
+<summary>List of Custom Commands</summary>
++ [Report System](https://github.com/Olde7325/lagpdb-cc/tree/main/Report-System)
+    - Set logging channel where the reports are being logged into
+    - Notify users about their actions being taken on their reports
+        - Set "talk-to-staff-channel" where users are being notified and can talk to the moderators
+    - Edit report message to the current state (e.g. "under investigation")
+    - Use reactions as menu options
+</details>
+
+*This is by no means an exhaustive list, nor is it meant to be. See the individual folders for details.*
 
 ## Contributing
 If you spot an error, feel free to open a PR or open an issue.
