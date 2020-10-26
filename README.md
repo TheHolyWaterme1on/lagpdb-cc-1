@@ -36,4 +36,8 @@ These commands are not guaranteed to be working (although I tested them).
 If you are having difficulties/issues with one of my custom commands, please feel free to DM me on Discord (tag is `Olde#7325`) or ping me in the [YAGPDB Support Server](https://discord.gg/5uVyq2E) (the latter is recommended).
 
 ## Maintainers
-**lagpdb-cc** is maintained by [@Olde7325](https://github.com/Olde7325) (`Olde#7325`), [@Boom](https://github.com/BoomBoomerTummy) (`BoomBoomer#4200`), and [@Mas](https://github.com/TheMasterOfabsloutelyNothing) (`Mas | Order of the Frogs#1026`).
+**lagpdb-cc** is maintained by [@Olde7325](https://github.com/Olde7325) (`Olde#7325`) and [@Boom](https://github.com/BoomBoomerTummy) (`BoomBoomer#4200`).
+
+## Exclusion of Usage
+The maintainers reserve the right to exclude single persons, groups, or whole Discord Servers from the usage of any custom command posted in this repository. The letter of exclusion always comes in written form, never spoken.
+To see if you or your server has been excluded, please open an issue here. We will then review it.
