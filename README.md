@@ -21,7 +21,7 @@ If you are adding a new CC, please look through my code how I format it and try 
 
 ## Disclaimer (aka legal shit nobody takes the time to actually read)
 The YAGPDB creator, staff, and/or support are not responsible for any difficulties caused by these custom commands.
-These commands are not guaranteed to be working (although I thouroughly tested them).
+These commands are not guaranteed to be working (although I tested them).
 
 ## Still need help?
 If you are having difficulties/issues with one of my custom commands, please feel free to DM me on Discord (tag is `Olde#7325`) or ping me in the [YAGPDB Support Server](https://discord.gg/5uVyq2E) (the latter is recommended).
