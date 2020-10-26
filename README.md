@@ -37,7 +37,3 @@ If you are having difficulties/issues with one of my custom commands, please fee
 
 ## Maintainers
 **lagpdb-cc** is maintained by [@Olde7325](https://github.com/Olde7325) (`Olde#7325`) and [@Boom](https://github.com/BoomBoomerTummy) (`BoomBoomer#4200`).
-
-## Exclusion of Usage
-The maintainers reserve the right to exclude single persons, groups, or whole Discord Servers from the usage of any custom command posted in this repository. The letter of exclusion always comes in written form, never spoken.
-To see if you or your server has been excluded, please open an issue here. We will then review it.
