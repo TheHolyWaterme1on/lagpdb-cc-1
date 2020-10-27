@@ -1,0 +1,69 @@
+{{/* This command allows users to count from 0 until any number. 
+It also includes some optional features, feel free to remove any of them, but make sure you don't change the main command
+Usage: Write the correct next number in the appropriate channel
+Trigger: Regex trigger with the trigger \A
+Originally created by Timcampy#5636, this modified version is from the Support Server's Custom Command page */}}
+
+{{if not .ExecData}}
+{{/* Main Counting Command */}}
+
+{{/* First time running command, set up initial values*/}}
+{{$lastUser := dbGet 118 "counter_user"}}
+{{if $lastUser}}
+{{else}}
+{{dbSet 118 "counter_user" 0}}
+{{dbSet 118 "counter_count" "0"}}
+{{end}}
+
+{{/* OPTIONAL: this is just to prevent one person to type all the numbers themselves */}}
+{{/* If current user ID matches the user who last successfully ran command */}}
+{{if eq (toFloat $lastUser.Value) (toFloat .User.ID)}}
+{{deleteTrigger 1}}
+{{sendDM "You can not send a msg twice in a row"}}
+{{else}}
+
+
+{{$next := dbGet 118 "counter_count"}}
+
+{{/* If message is equal to the expected next number , update counter */}}
+{{if and (eq (toInt .StrippedMsg) (toInt ($next.Value)))  (eq (len (toString .StrippedMsg)) (len (toString (toInt $next.Value)))) }}
+{{dbSet 118 "counter_count" (add (toInt ($next.Value)) 1)}}
+
+{{/* OPTIONAL count tracker per user, Delete if you don't want to use */}}
+{{$key := joinStr "" "counter_tracker_"  .User.ID}}
+{{$userCount := dbGet 118 $key}}
+{{if $userCount}}
+{{dbSet 118 $key (add (toInt ($userCount.Value)) 1)}}
+{{else}}
+{{dbSet 118 $key 1}}
+{{end}}
+
+{{/* OPTIONAL: If you don't want to give a role to the latest person delete everything but dbset */}}
+{{/* Give new user role, take role back from old user and update latest user */}}
+{{/* (UPDATE THE ROLEID) */}}
+
+{{giveRoleID .User.ID 606891664396648474}}
+{{$tmpUser := (userArg (toInt $lastUser.Value))}}
+{{/* check if its a valid user or not */}}
+{{if $tmpUser}} 
+{{takeRoleID ($tmpUser.ID) 606891664396648474}}
+{{end}}
+
+{{/* OPTIONAL: If you don't want a channel topic goal tracker delete everything but dbset */}}
+{{/*Goal Tracker in Topic */}}
+{{$current := toInt (reFind `\d+` .Channel.Topic)}}
+{{$list := cslice 15 20 25 30 50 75 100}}{{$found := false}}
+{{$round := toInt (slice .StrippedMsg 0 2)}}
+{{range $list}}{{if and (lt $round .) (not $found)}}{{$round = .}}{{$found = true}}{{end}}{{end}}
+{{$res := toInt (mult $round (pow 10 (sub (len .StrippedMsg) 2)))}}
+{{if not (eq $res $current)}}{{editChannelTopic nil (print "Next Goal: " $res " ;\nSay the number that comes after.\nA person must let someone else go before being able to go again.\n-nextcount for next number\ndo NOT edit your msg.. or ELSE ^^")}}{{end}}
+
+{{dbSet 118 "counter_user" (toString .User.ID)}}
+{{else}}
+
+{{/* Message did not match expected next value */}}
+{{deleteTrigger 1}}
+{{/* Removed Because too annoying :^) */}}
+{{/*sendDM "That is not the next number, learn how to count :)"*/}}
+{{end}}
+{{end}}
