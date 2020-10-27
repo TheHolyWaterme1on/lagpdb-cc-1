@@ -1,6 +1,11 @@
+{{/* This command allows users to count from 0 until any number. 
+It also includes some optional features, feel free to remove any of them, but make sure you don't change the main command
+Usage: Write the correct next number in the appropriate channel
+Trigger: Regex trigger with the trigger \A
+Originally created by Timcampy#5636, this modified version is from the Support Server's Custom Command page */}}
+
 {{if not .ExecData}}
 {{/* Main Counting Command */}}
-{{/* If you are not doing (no twice msg in a row)  or (role assignment for latest user)  you can remove counter_user and by extension everything to do with $lastUser*/}}
 
 {{/* First time running command, set up initial values*/}}
 {{$lastUser := dbGet 118 "counter_user"}}
