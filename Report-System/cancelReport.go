@@ -19,7 +19,7 @@
 {{/*CONFIG AREA END*/}}
 
 
-{{/*ACTUAL COMMENT*/}}
+{{/*ACTUAL CODE*/}}
 {{if not (ge (len .CmdArgs) 3)}}
     ```{{.Cmd}} <Message:ID> <Key:Text> <Reason:Text>```
     Not enough arguments passed.

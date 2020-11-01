@@ -68,26 +68,32 @@
             {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation has been accepted. %s" $user $mod)}}
             {{deleteAllMessageReactions nil .Reaction.MessageID}}
             {{editMessage $reportLog .Reaction.MessageID (printf "%s\n %s **Cancellation request accepted. Report nullified.** %s" $userReportString $userCancelString $mod)}}
+            {{dbDel .Reaction.MessageID "ModeratorID"}}
             {{addReactions "🏳️"}}
         {{else if eq .Reaction.Emoji.Name "👍"}}{{/*Report resolved*/}}
             {{sendMessage $reportDiscussion (printf "<@%d>: Your report has been resolved. %s" $user $mod)}}
             {{deleteAllMessageReactions nil .Reaction.MessageID}}
             {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report resolved.** %s" $userReportString $mod)}}
+            {{dbDel .Reaction.MessageID "ModeratorID"}}
             {{addReactions "🏳️"}}
         {{else if eq .Reaction.Emoji.Name "❗"}}
             {{$silent := exec "warn" $user "False Report."}}
             {{deleteAllMessageReactions nil .Reaction.MessageID}}
             {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report dismissed. Warned for False report.** %s" $userReportString $mod)}}
+            {{dbDel .Reaction.MessageID "ModeratorID"}}
             {{addReactions "🏳️"}}
         {{else if eq .Reaction.Emoji.Name "👌"}}
             {{deleteAllMessageReactions nil .Reaction.MessageID}}
             {{editMessage $reportLog .Reaction.MessageID (printf "%s \n **Report dismissed. No action taken.** %s" $userReportString $mod)}}
+            {{dbDel .Reaction.MessageID "ModeratorID"}}
+            {{addReactions "🏳️"}}
         {{else if eq .Reaction.Emoji.Name "🏳️"}}
             {{deleteMessageReaction nil .Reaction.MessageID .User.ID "🏳️"}}
         {{end}}
     {{else}}
         {{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
     {{end}}
+{{else}}
     {{dbSet .Reaction.MessageID "ModeratorID" .User.ID}}
     {{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
     {{$tempMessage := sendMessageRetID nil (printf "<@%d>: No moderator detected, you claimed this report now. Your reactions were reset, please redo. Thanks ;)" .User.ID)}}
