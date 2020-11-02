@@ -14,10 +14,12 @@ These CCs allow you to create a report system with the ability for users to requ
 1. Copy the ID of your report Logging channel (The one where the native report feature logs those reports into)
 2. Disable the native report command in your `control panel > Tools & Utilities > Moderation`
     * I also recommend creating a command override which disables that command, too
-3. Paste it in the config area of every command to `$reportLog`
+3. Paste it in the config area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$reportLog`
 4. Copy the ID of your report-discussion channel (if you don't have one, make one!)
-5. Paste it in the config area of every command to `$reportDiscussion`
-6. Done!
+5. Paste it in the config area of [cancelReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/cancelReport.go) `$reportDiscussion`
+6. Run `-ru dbSetup` (**Case sensitive!**)
+7. YAGPDB will now set the database entries and respond with `Database primed, system is ready to use!`
+8. Done! Your super nifty report system is now ready to use!
 
 ## The Commands
 ### reactionHandler.go

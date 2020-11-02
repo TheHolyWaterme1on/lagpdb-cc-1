@@ -12,19 +12,27 @@
 
 {{/*CONFIG AREA START*/}}
 
-{{$reportLog := 750730537571975298}} {{/*The channel where your reports are logged into.*/}}
-{{$reportDiscussion := 750099460314628176}} {{/*Your channel where users talk to staff*/}}
+{{$reportLog := 772251753173221386}} {{/*The channel where your reports are logged into.*/}}
+{{$reportDiscussion := 766370841196888104}} {{/*Your channel where users talk to staff*/}}
 
 {{/*CONFIG AREA END*/}}
 
 
 {{/*ACTUAL CODE*/}}
-{{if not (ge (len .CmdArgs) 2)}}
+{{if (eq (len .CmdArgs) 1)}}
+    {{if eq (index .CmdArgs 0) "dbSetup"}}
+        {{if not ((dbGet 2000 "reportLog") (dbGet 2000 "reportDiscussion"))}}
+            {{dbSet 2000 "reportLog" (toString $reportLog)}}
+            {{dbSet 2000 "reportDiscussion" (toString $reportDiscussion)}}
+            {{sendMessage nil "**Database primed, system is ready to use!**"}}
+        {{else}}
+            {{sendMessage nil "**Database entries already exist! No action taken, system still ready to use.**"}}
+        {{end}}
+    {{end}}
+{{else if not (ge (len .CmdArgs) 2)}}
     ```{{.Cmd}} <User:Mention/ID> <Reason:Text>```
     Not enough arguments passed.
 {{else}}
-    {{dbSet 2000 "reportLog" $reportLog}}
-    {{dbSet 2000 "reportDiscussion" $reportDiscussion}}
     {{$secret := adjective}}
     {{$s := execAdmin "log"}}
     {{$user := userArg (index .CmdArgs 0)}}

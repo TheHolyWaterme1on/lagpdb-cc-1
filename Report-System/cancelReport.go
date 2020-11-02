@@ -10,20 +10,13 @@
     Created by: Olde#7325
 */}}
 
-
-{{/*CONFIG AREA START*/}}
-
-{{$reportLog := 750730537571975298}} {{/*The channel where your reports are logged into.*/}}
-{{$reportDiscussion := 750099460314628176}} {{/*Your channel where users talk to staff*/}}
-
-{{/*CONFIG AREA END*/}}
-
-
 {{/*ACTUAL CODE*/}}
 {{if not (ge (len .CmdArgs) 3)}}
     ```{{.Cmd}} <Message:ID> <Key:Text> <Reason:Text>```
     Not enough arguments passed.
 {{else}}
+    {{$reportLog := (dbGet 2000 "reportLog").Value|toInt64}}
+    {{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
     {{$dbValue := (dbGet .User.ID "key").Value|str}}
     {{$reportMessage := ((index .CmdArgs 0)|toInt64)}}
     {{$reportMessageContent := (getMessage $reportLog $reportMessage).Content}}

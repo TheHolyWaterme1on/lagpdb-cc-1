@@ -10,16 +10,11 @@
     Created by: Olde#7325
 */}}
 
-{{/*CONFIG AREA START*/}}
-
-{{$reportLog := 750730537571975298}} {{/*The channel where your reports are logged into.*/}}
-{{$reportDiscussion := 750099460314628176}} {{/*Your channel where users talk to staff*/}}
-
-{{/*CONFIG AREA END*/}}
-
 {{/*ACTUAL CODE*/}}
 
 {{/*Validation steps*/}}
+{{$reportLog := (dbGet 2000 "reportLog").Value|toInt64}}
+{{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
 {{if .Reaction}}
 {{if .ReactionAdded}}
 {{if eq .Reaction.ChannelID $reportLog}}
@@ -33,7 +28,7 @@
 {{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}
 
 {{if dbGet .Reaction.MessageID "ModeratorID"}}
-    {{if eq .User.ID ((dbGet .Reaction.MessageID "ModeratorID").Value|toInt64)}}
+    {{if eq .User.ID (toInt64 (dbGet .Reaction.MessageID "ModeratorID").Value)}}
         {{if eq .Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
             {{sendMessage $reportDiscussion (printf "<@%d>: Your report has been dismissed. %s" $user $mod)}}
             {{deleteAllMessageReactions nil .Reaction.MessageID}}
@@ -94,7 +89,7 @@
         {{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
     {{end}}
 {{else}}
-    {{dbSet .Reaction.MessageID "ModeratorID" .User.ID}}
+    {{dbSet .Reaction.MessageID "ModeratorID" (toString .User.ID)}}
     {{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
     {{$tempMessage := sendMessageRetID nil (printf "<@%d>: No moderator detected, you claimed this report now. Your reactions were reset, please redo. Thanks ;)" .User.ID)}}
     {{deleteMessage nil $tempMessage 15}}
