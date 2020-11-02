@@ -5,7 +5,8 @@ These CCs allow you to create a report system with the ability for users to requ
 ## Functionality
 * Set logging channel where the reports are being logged into
 * Notify users about their actions being taken on their reports
-    * Set "talk-to-staff-channel" where users are being notified and can talk to the moderators (optional)
+* Enable users to request cancellation of their latest report
+    * Set "talk-to-staff-channel" where users are being notified and can talk to the moderators
 * Edit report message to the current state (e.g. "under investigation")
 * Use reactions as menu options
 * Locking reactions to one staff member upon first reaction
