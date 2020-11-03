@@ -14,7 +14,7 @@
 
 {{$reportLog := 772251753173221386}} {{/*The channel where your reports are logged into.*/}}
 {{$reportDiscussion := 766370841196888104}} {{/*Your channel where users talk to staff*/}}
-{{$ModRoles := cslice 766372666483408947 766372758799122442}} {{/*RoleIDs of the roles which are considered moderator.*/}}
+{{$modRoles := cslice 766372666483408947 766372758799122442}} {{/*RoleIDs of the roles which are considered moderator.*/}}
 {{$adminRoles := cslice 766372666483408947}} {{/*RoleIDs of the roles which are considered admins. Can prime the database to setup the system.*/}}
 
 {{/*CONFIG AREA END*/}}
