@@ -26,72 +26,78 @@
 {{$userReportString := ((dbGet 2000 (printf "userReport%d" $user)).Value|str)}}
 {{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user)).Value|str)}}
 {{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}
+{{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
+{{$isMod := false}} {{range .Member.Roles}} {{if in $adminRoles .}} {{$isMod = true}} {{end}} {{end}}
 
-{{if dbGet .Reaction.MessageID "ModeratorID"}}
-    {{if eq .User.ID (toInt64 (dbGet .Reaction.MessageID "ModeratorID").Value)}}
-        {{if eq .Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
-            {{sendMessage $reportDiscussion (printf "<@%d>: Your report has been dismissed. %s" $user $mod)}}
-            {{deleteAllMessageReactions nil .Reaction.MessageID}}
-            {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report dismissed.** %s \nWarn for `false report` with ❗ or finish without warning with 👌." $userReportString $mod)}}
-            {{addReactions "❗" "👌"}}
-            {{dbSet $user "key" "used"}}
-        {{else if eq .Reaction.Emoji.Name "🛡️"}}{{/*Taking care*/}}
-            {{sendMessage $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user $mod)}}
-            {{deleteAllMessageReactions nil .Reaction.MessageID}}
-            {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Under investigation.** %s \nDismiss with ❌ or resolve with 👍." $userReportString $mod)}}
-            {{addReactions "❌" "👍"}}
-            {{dbSet $user "key" "used"}}
-        {{else if eq .Reaction.Emoji.Name "⚠️"}}{{/*Request info*/}}
-            {{if not (eq ((dbGet $user "key").Value) "used")}}{{/*Without cancellation request*/}}
-                {{sendMessage $reportDiscussion (printf "<@%d>: More information has been requested. Please post it down below. %s" $user $mod)}}
+{{if $isMod}}
+    {{if dbGet .Reaction.MessageID "ModeratorID"}}
+        {{if eq .User.ID (toInt64 (dbGet .Reaction.MessageID "ModeratorID").Value)}}
+            {{if eq .Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your report has been dismissed. %s" $user $mod)}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
-                {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **More information requested.** %s \nDismiss with ❌ or start investigation with 🛡️." $userReportString $mod)}}
-                {{addReactions "❌" "🛡️"}}
-            {{else}} 
-            {{/*With Cancellation request*/}}
-                {{sendMessage $reportDiscussion (printf "<@%d>: More information regarding your cancellation has been requested. Please post it down below. %s" $user $mod)}}
+                {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report dismissed.** %s \nWarn for `false report` with ❗ or finish without warning with 👌." $userReportString $mod)}}
+                {{addReactions "❗" "👌"}}
+                {{dbSet $user "key" "used"}}
+            {{else if eq .Reaction.Emoji.Name "🛡️"}}{{/*Taking care*/}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user $mod)}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
-                {{editMessage $reportLog .Reaction.MessageID (printf "%s\n \n%s \n**More information requested.** %s \nDismiss request with 🚫, or accept request __(and nullify report)__ with ✅" $userReportString $userCancelString $mod)}}
-                {{addReactions "🚫" "✅"}}
+                {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Under investigation.** %s \nDismiss with ❌ or resolve with 👍." $userReportString $mod)}}
+                {{addReactions "❌" "👍"}}
+                {{dbSet $user "key" "used"}}
+            {{else if eq .Reaction.Emoji.Name "⚠️"}}{{/*Request info*/}}
+                {{if not (eq ((dbGet $user "key").Value) "used")}}{{/*Without cancellation request*/}}
+                    {{sendMessage $reportDiscussion (printf "<@%d>: More information has been requested. Please post it down below. %s" $user $mod)}}
+                    {{deleteAllMessageReactions nil .Reaction.MessageID}}
+                    {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **More information requested.** %s \nDismiss with ❌ or start investigation with 🛡️." $userReportString $mod)}}
+                    {{addReactions "❌" "🛡️"}}
+                {{else}} 
+                    {{/*With Cancellation request*/}}
+                    {{sendMessage $reportDiscussion (printf "<@%d>: More information regarding your cancellation has been requested. Please post it down below. %s" $user $mod)}}
+                    {{deleteAllMessageReactions nil .Reaction.MessageID}}
+                    {{editMessage $reportLog .Reaction.MessageID (printf "%s\n \n%s \n**More information requested.** %s \nDismiss request with 🚫, or accept request __(and nullify report)__ with ✅" $userReportString $userCancelString $mod)}}
+                    {{addReactions "🚫" "✅"}}
+                {{end}}
+            {{else if eq .Reaction.Emoji.Name "🚫"}}{{/*Dismissal of cancellation*/}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation has been dismissed. %s" $user $mod)}}
+                {{deleteAllMessageReactions nil .Reaction.MessageID}}
+                {{editMessage $reportLog .Reaction.MessageID (printf "%s\n %s\n**Cancellation request denied.** %s \n%s" $userReportString $userCancelString $mod $reportGuide)}}
+                {{addReactions "❌" "🛡️" "⚠️"}}
+            {{else if eq .Reaction.Emoji.Name "✅"}}{{/*Cancellation approved*/}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation has been accepted. %s" $user $mod)}}
+                {{deleteAllMessageReactions nil .Reaction.MessageID}}
+                {{editMessage $reportLog .Reaction.MessageID (printf "%s\n %s **Cancellation request accepted. Report nullified.** %s" $userReportString $userCancelString $mod)}}
+                {{dbDel .Reaction.MessageID "ModeratorID"}}
+                {{addReactions "🏳️"}}
+            {{else if eq .Reaction.Emoji.Name "👍"}}{{/*Report resolved*/}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your report has been resolved. %s" $user $mod)}}
+                {{deleteAllMessageReactions nil .Reaction.MessageID}}
+                {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report resolved.** %s" $userReportString $mod)}}
+                {{dbDel .Reaction.MessageID "ModeratorID"}}
+                {{addReactions "🏳️"}}
+            {{else if eq .Reaction.Emoji.Name "❗"}}
+                {{$silent := exec "warn" $user "False Report."}}
+                {{deleteAllMessageReactions nil .Reaction.MessageID}}
+                {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report dismissed. Warned for False report.** %s" $userReportString $mod)}}
+                {{dbDel .Reaction.MessageID "ModeratorID"}}
+                {{addReactions "🏳️"}}
+            {{else if eq .Reaction.Emoji.Name "👌"}}
+                {{deleteAllMessageReactions nil .Reaction.MessageID}}
+                {{editMessage $reportLog .Reaction.MessageID (printf "%s \n **Report dismissed. No action taken.** %s" $userReportString $mod)}}
+                {{dbDel .Reaction.MessageID "ModeratorID"}}
+                {{addReactions "🏳️"}}
+            {{else if eq .Reaction.Emoji.Name "🏳️"}}
+                {{deleteMessageReaction nil .Reaction.MessageID .User.ID "🏳️"}}
             {{end}}
-        {{else if eq .Reaction.Emoji.Name "🚫"}}{{/*Dismissal of cancellation*/}}
-            {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation has been dismissed. %s" $user $mod)}}
-            {{deleteAllMessageReactions nil .Reaction.MessageID}}
-            {{editMessage $reportLog .Reaction.MessageID (printf "%s\n %s\n**Cancellation request denied.** %s \n%s" $userReportString $userCancelString $mod $reportGuide)}}
-            {{addReactions "❌" "🛡️" "⚠️"}}
-        {{else if eq .Reaction.Emoji.Name "✅"}}{{/*Cancellation approved*/}}
-            {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation has been accepted. %s" $user $mod)}}
-            {{deleteAllMessageReactions nil .Reaction.MessageID}}
-            {{editMessage $reportLog .Reaction.MessageID (printf "%s\n %s **Cancellation request accepted. Report nullified.** %s" $userReportString $userCancelString $mod)}}
-            {{dbDel .Reaction.MessageID "ModeratorID"}}
-            {{addReactions "🏳️"}}
-        {{else if eq .Reaction.Emoji.Name "👍"}}{{/*Report resolved*/}}
-            {{sendMessage $reportDiscussion (printf "<@%d>: Your report has been resolved. %s" $user $mod)}}
-            {{deleteAllMessageReactions nil .Reaction.MessageID}}
-            {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report resolved.** %s" $userReportString $mod)}}
-            {{dbDel .Reaction.MessageID "ModeratorID"}}
-            {{addReactions "🏳️"}}
-        {{else if eq .Reaction.Emoji.Name "❗"}}
-            {{$silent := exec "warn" $user "False Report."}}
-            {{deleteAllMessageReactions nil .Reaction.MessageID}}
-            {{editMessage $reportLog .Reaction.MessageID (printf "%s\n **Report dismissed. Warned for False report.** %s" $userReportString $mod)}}
-            {{dbDel .Reaction.MessageID "ModeratorID"}}
-            {{addReactions "🏳️"}}
-        {{else if eq .Reaction.Emoji.Name "👌"}}
-            {{deleteAllMessageReactions nil .Reaction.MessageID}}
-            {{editMessage $reportLog .Reaction.MessageID (printf "%s \n **Report dismissed. No action taken.** %s" $userReportString $mod)}}
-            {{dbDel .Reaction.MessageID "ModeratorID"}}
-            {{addReactions "🏳️"}}
-        {{else if eq .Reaction.Emoji.Name "🏳️"}}
-            {{deleteMessageReaction nil .Reaction.MessageID .User.ID "🏳️"}}
+        {{else}}
+            {{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
         {{end}}
     {{else}}
+        {{dbSet .Reaction.MessageID "ModeratorID" (toString .User.ID)}}
         {{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
+        {{$tempMessage := sendMessageRetID nil (printf "<@%d>: No moderator detected, you claimed this report now. Your reactions were reset, please redo. Thanks ;)" .User.ID)}}
+        {{deleteMessage nil $tempMessage 15}}
     {{end}}
 {{else}}
-    {{dbSet .Reaction.MessageID "ModeratorID" (toString .User.ID)}}
-    {{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
-    {{$tempMessage := sendMessageRetID nil (printf "<@%d>: No moderator detected, you claimed this report now. Your reactions were reset, please redo. Thanks ;)" .User.ID)}}
-    {{deleteMessage nil $tempMessage 15}}
+{{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
 {{end}}
 {{end}}{{end}}{{end}}
