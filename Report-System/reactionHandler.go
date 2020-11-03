@@ -27,7 +27,7 @@
 {{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user)).Value|str)}}
 {{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}
 {{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
-{{$isMod := false}} {{range .Member.Roles}} {{if in $adminRoles .}} {{$isMod = true}} {{end}} {{end}}
+{{$isMod := false}} {{range .Member.Roles}} {{if in $modRoles .}} {{$isMod = true}} {{end}} {{end}}
 
 {{if $isMod}}
     {{if dbGet .Reaction.MessageID "ModeratorID"}}
