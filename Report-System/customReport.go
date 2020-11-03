@@ -25,7 +25,7 @@
 {{if (eq (len .CmdArgs) 1)}}
     {{if eq (index .CmdArgs 0) "dbSetup"}}
         {{if $isAdmin}}
-            {{if not ((dbGet 2000 "reportLog") (dbGet 2000 "reportDiscussion"))}}
+            {{if not ((dbGet 2000 "reportLog") (dbGet 2000 "reportDiscussion") (dbGet 2000 "modRoles") (dbGet 2000 "adminRoles"))}}
                 {{dbSet 2000 "reportLog" (toString $reportLog)}}
                 {{dbSet 2000 "reportDiscussion" (toString $reportDiscussion)}}
                 {{dbSet 2000 "modRoles" $modRoles}}
