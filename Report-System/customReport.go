@@ -44,7 +44,7 @@
     {{$secret := adjective}}
     {{$s := execAdmin "log"}}
     {{$user := userArg (index .CmdArgs 0)}}
-    {{if eq $user .User}}
+    {{if eq $user.ID .User.ID}}
         {{sendMessage nil "You can't report yourself, silly."}}
     {{else}}
         {{$reason := joinStr " " (slice .CmdArgs 1)}}
