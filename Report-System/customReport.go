@@ -39,14 +39,12 @@
         {{end}}
     {{end}}
 {{else if not (ge (len .CmdArgs) 2)}}
-    {{sendMessage nil "```%s <User:Mention/ID> <Reason:Text>``` \n Not enough arguments passed." .Cmd}}
+    {{sendMessage nil (printf "```%s <User:Mention/ID> <Reason:Text>``` \n Not enough arguments passed." .Cmd)}}
 {{else}}
     {{$secret := adjective}}
     {{$s := execAdmin "log"}}
     {{$user := userArg (index .CmdArgs 0)}}
-    {{if eq $user .User}}
-        {{sendMessage nil "You can't report yourself, silly."}}
-    {{else}}
+    {{if not (eq $user.ID .User.ID)}}
         {{$reason := joinStr " " (slice .CmdArgs 1)}}
         {{$reportGuide := (printf "\nDismiss report with ❌, take action with 🛡️, or request more background information with ⚠️")}}
         {{$userReportString := (printf  "<@%d> reported <@%d> in <#%d> for: `%s` \n Last 100 messages: <%s>" .User.ID $user.ID .Channel.ID $reason $s)}}
@@ -57,5 +55,7 @@
         {{sendMessage nil "User reported to the proper authorites!"}}
         {{dbSet .User.ID "key" $secret}}
         {{sendDM (printf "User reported to the proper authorities! If you wish to cancel your report, simply type `-cancelr %d %s` in any channel.\n **A reason is required.**" $x $secret)}}
+    {{else}}
+        {{sendMessage nil "You can't report yourself, silly."}}
     {{end}}
 {{end}}
