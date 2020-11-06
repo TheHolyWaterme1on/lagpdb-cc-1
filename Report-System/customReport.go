@@ -39,7 +39,7 @@
         {{end}}
     {{end}}
 {{else if not (ge (len .CmdArgs) 2)}}
-    {{sendMessage nil "```%s <User:Mention/ID> <Reason:Text>``` \n Not enough arguments passed." .Cmd}}
+    {{sendMessage nil (printf "```%s <User:Mention/ID> <Reason:Text>``` \n Not enough arguments passed." .Cmd)}}
 {{else}}
     {{$secret := adjective}}
     {{$s := execAdmin "log"}}
