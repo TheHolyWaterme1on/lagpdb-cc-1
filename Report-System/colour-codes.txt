@@ -1,6 +1,6 @@
 - Pending moderator (default state) -> grey
-- Pending cancellation request -> 
+- Pending cancellation request -> magenta
 - Under investigation -> yellow
 - Information requested -> blue
 - Report resolved (i.e. cancellation accepted, dismissal, action on reported user taken, and similar) -> green
-- Cancellation request denied (defaults then, but with moderator) -> 
+- Cancellation request denied (defaults then, but with moderator) -> red 
