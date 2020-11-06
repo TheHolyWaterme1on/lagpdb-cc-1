@@ -17,25 +17,36 @@
 {{else}}
     {{$reportLog := (dbGet 2000 "reportLog").Value|toInt64}}
     {{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
-    {{$dbValue := (dbGet .User.ID "key").Value|str}}
-    {{$reportMessage := ((index .CmdArgs 0)|toInt64)}}
-    {{$reportMessageContent := (getMessage $reportLog $reportMessage).Content}}
-    {{if (reFind (printf `\A<@!?%d>` .User.ID) $reportMessageContent)}} 
-            {{if eq "used" $dbValue}}
-                Your latest report has already been cancelled!
+    {{$userKey := (dbGet .User.ID "key").Value|str}}
+    {{$reportMessageID := ((index .CmdArgs 0)|toInt64)}}
+    {{$reportMessage := (getMessage $reportLog $reportMessageID)}}
+    {{if eq (toInt64 (dbGet $reportMessageID "reportAuthor").Value) (toInt64 .User.ID)}}
+            {{if eq "used" $userKey}}
+                Your latest report already has been cancelled!
             {{else}}
-            {{if eq (index .CmdArgs 1|str) $dbValue}}
+            {{if eq (index .CmdArgs 1|str) $userKey}}
                 {{if ge (len .CmdArgs) 3}}
                     {{$reason := joinStr " " (slice .CmdArgs 2)}}
                     {{$userReportString := (dbGet 2000 (printf "userReport%d" .User.ID)).Value|str}}
                     {{$cancelGuide := (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️")}}
                     {{dbSet 2000 "cancelGuideBasic" $cancelGuide}}
                     {{$userCancelString := (printf "<@%d> requested cancellation of this report due to: `%s`" .User.ID $reason)}}
+                    {{$combinedString := (print $userReportString " \n " $userCancelString)}}
                     {{dbSet 2000 (printf "userCancel%d" .User.ID) $userCancelString}}
-                    {{editMessage $reportLog $reportMessage (printf "%s \n %s. \n %s" $userReportString $userCancelString $cancelGuide)}}
+                    {{if $reportMessage.Embeds}} {{/*structToSdict the embed so that we can edit it*/}}
+                        {{$embed := structToSdict (index $reportMessage.Embeds 0)}}
+                            {{range $k, $v := $embed}}
+                                {{- if eq (kindOf $v true) "struct" }}
+                                    {{- $embed.Set $k (structToSdict $v) }}
+                                {{- end -}}
+                            {{end}}
+                        {{if $embed.Author}} {{$embed.Author.Set "Icon_URL" $embed.Author.IconURL}} {{end}}
+                        {{if $embed.Footer}} {{$embed.Footer.Set "Icon_URL" $embed.Footer.IconURL}} {{end}}
+                        {{$embed.Set "Description" $combinedString}}
+                    {{end}}
                     Cancellation requested, have a nice day!
-                    {{deleteAllMessageReactions $reportLog $reportMessage}}
-                    {{addMessageReactions $reportLog $reportMessage "🚫" "✅" "⚠️"}}
+                    {{deleteAllMessageReactions $reportLog $reportMessageID}}
+                    {{addMessageReactions $reportLog $reportMessageID "🚫" "✅" "⚠️"}}
                     {{dbSet .User.ID "key" "used"}}
                 {{end}}
             {{else}}

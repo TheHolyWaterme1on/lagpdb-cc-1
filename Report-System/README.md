@@ -22,7 +22,7 @@ These CCs allow you to create a report system with the ability for users to requ
 7. Copy the IDs of the roles which are considered admins, paste those in the config area of [cancelReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/cancelReport.go) to `$adminRoles`
 8. Run `-ru dbSetup` (**Case sensitive!**)
     * This command is restricted to admins only!
-9. YAGPDB will now set the database entries and respond with `Database primed, system is ready to use!`
+9. YAGPDB will now set the database entries and respond with `Database primed, report numbers resetted, system is ready to use!`
 10. Done! Your super nifty report system is now ready to use!
 
 ## The Commands
