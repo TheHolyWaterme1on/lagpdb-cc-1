@@ -17,25 +17,38 @@
 {{else}}
     {{$reportLog := (dbGet 2000 "reportLog").Value|toInt64}}
     {{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
-    {{$dbValue := (dbGet .User.ID "key").Value|str}}
-    {{$reportMessage := ((index .CmdArgs 0)|toInt64)}}
-    {{$reportMessageContent := (getMessage $reportLog $reportMessage).Content}}
-    {{if (reFind (printf `\A<@!?%d>` .User.ID) $reportMessageContent)}} 
-            {{if eq "used" $dbValue}}
-                Your latest report has already been cancelled!
+    {{$userKey := (dbGet .User.ID "key").Value|str}}
+    {{$reportMessageID := ((index .CmdArgs 0)|toInt64)}}
+    {{if eq (toInt64 (dbGet $reportMessageID "reportAuthor").Value) (toInt64 .User.ID)}}
+            {{if eq "used" $userKey}}
+                Your latest report already has been cancelled!
             {{else}}
-            {{if eq (index .CmdArgs 1|str) $dbValue}}
+            {{if eq (index .CmdArgs 1|str) $userKey}}
                 {{if ge (len .CmdArgs) 3}}
                     {{$reason := joinStr " " (slice .CmdArgs 2)}}
                     {{$userReportString := (dbGet 2000 (printf "userReport%d" .User.ID)).Value|str}}
-                    {{$cancelGuide := (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️")}}
+                    {{$cancelGuide := (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️.")}}
                     {{dbSet 2000 "cancelGuideBasic" $cancelGuide}}
-                    {{$userCancelString := (printf "<@%d> requested cancellation of this report due to: `%s`" .User.ID $reason)}}
+                    {{$userCancelString := (printf "Cancellation of this report was request. \n Reason: `%s`" $reason)}}
+                    {{$combinedString := (print $userReportString " \n " $userCancelString)}}
                     {{dbSet 2000 (printf "userCancel%d" .User.ID) $userCancelString}}
-                    {{editMessage $reportLog $reportMessage (printf "%s \n %s. \n %s" $userReportString $userCancelString $cancelGuide)}}
+                    {{$report := index (getMessage $reportLog $reportMessageID).Embeds 0|structToSdict}}
+                    {{range $k, $v := $report}}
+                        {{if eq (kindOf $v true) "struct"}}
+                            {{$report.Set $k (structToSdict $v)}}
+                        {{end}}
+                    {{end}}
+                    {{with $report}}
+                        {{.Author.Set "Icon_URL" $report.Author.IconURL}} 
+                        {{.Footer.Set "Icon_URL" $report.Footer.IconURL}}
+                        {{.Set "description" $combinedString}}
+                        {{.Set "color" 16711935}}
+                        {{.Set "Fields" ((cslice).AppendSlice .Fields)}}{{.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" $cancelGuide)}}
+                    {{end}}
+                    {{editMessage $reportLog $reportMessageID (complexMessageEdit "embed" $report)}}
                     Cancellation requested, have a nice day!
-                    {{deleteAllMessageReactions $reportLog $reportMessage}}
-                    {{addMessageReactions $reportLog $reportMessage "🚫" "✅" "⚠️"}}
+                    {{deleteAllMessageReactions $reportLog $reportMessageID}}
+                    {{addMessageReactions $reportLog $reportMessageID "🚫" "✅" "⚠️"}}
                     {{dbSet .User.ID "key" "used"}}
                 {{end}}
             {{else}}
