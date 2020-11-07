@@ -1,6 +1,7 @@
 # Report System
 These commands are **not** standalone. Add all the commands if you wish to use them.
 These CCs allow you to create a report system with the ability for users to request cancellation/nullification of their reports and add some functionalities for staff utilizing reactions.
+All neccessary informations are composed in an embed which gets edited accordingly.
 
 ## Functionality
 * Set logging channel where the reports are being logged into
