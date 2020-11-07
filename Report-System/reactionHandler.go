@@ -81,7 +81,6 @@
             {{else if eq .Reaction.Emoji.Name "👍"}}{{/*Report resolved*/}}
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your report has been resolved. %s" $user $mod)}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
-                {{editMessage nil .Reaction.MessageID (printf "%s\n **Report resolved.** %s" $userReportString $mod)}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report resolved.__")}}
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 3))}}
                 {{$report.Set "color" 65280}}
