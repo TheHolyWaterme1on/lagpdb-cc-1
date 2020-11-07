@@ -19,7 +19,6 @@
     {{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
     {{$userKey := (dbGet .User.ID "key").Value|str}}
     {{$reportMessageID := ((index .CmdArgs 0)|toInt64)}}
-    {{$reportMessage := (getMessage $reportLog $reportMessageID)}}
     {{if eq (toInt64 (dbGet $reportMessageID "reportAuthor").Value) (toInt64 .User.ID)}}
             {{if eq "used" $userKey}}
                 Your latest report already has been cancelled!
@@ -28,22 +27,25 @@
                 {{if ge (len .CmdArgs) 3}}
                     {{$reason := joinStr " " (slice .CmdArgs 2)}}
                     {{$userReportString := (dbGet 2000 (printf "userReport%d" .User.ID)).Value|str}}
-                    {{$cancelGuide := (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️")}}
+                    {{$cancelGuide := (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️.")}}
                     {{dbSet 2000 "cancelGuideBasic" $cancelGuide}}
                     {{$userCancelString := (printf "<@%d> requested cancellation of this report due to: `%s`" .User.ID $reason)}}
                     {{$combinedString := (print $userReportString " \n " $userCancelString)}}
                     {{dbSet 2000 (printf "userCancel%d" .User.ID) $userCancelString}}
-                    {{if $reportMessage.Embeds}} {{/*structToSdict the embed so that we can edit it*/}}
-                        {{$embed := structToSdict (index $reportMessage.Embeds 0)}}
-                            {{range $k, $v := $embed}}
-                                {{- if eq (kindOf $v true) "struct" }}
-                                    {{- $embed.Set $k (structToSdict $v) }}
-                                {{- end -}}
-                            {{end}}
-                        {{if $embed.Author}} {{$embed.Author.Set "Icon_URL" $embed.Author.IconURL}} {{end}}
-                        {{if $embed.Footer}} {{$embed.Footer.Set "Icon_URL" $embed.Footer.IconURL}} {{end}}
-                        {{$embed.Set "Description" $combinedString}}
+                    {{$report := index (getMessage $reportLog $reportMessageID).Embeds 0|structToSdict}}
+                    {{range $k, $v := $report}}
+                        {{if eq (kindOf $v true) "struct"}}
+                            {{$report.Set $k (structToSdict $v)}}
+                        {{end}}
                     {{end}}
+                    {{with $report}}
+                        {{.Author.Set "Icon_URL" $report.Author.IconURL}} 
+                        {{.Footer.Set "Icon_URL" $report.Footer.IconURL}}
+                        {{.Set "description" $combinedString}}
+                        {{.Set "color" 16711935}}
+                        {{.Set "Fields" ((cslice).AppendSlice .Fields)}}{{.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" $cancelGuide)}}
+                    {{end}}
+                    {{editMessage $reportLog $reportMessageID (complexMessageEdit "embed" $report)}}
                     Cancellation requested, have a nice day!
                     {{deleteAllMessageReactions $reportLog $reportMessageID}}
                     {{addMessageReactions $reportLog $reportMessageID "🚫" "✅" "⚠️"}}
