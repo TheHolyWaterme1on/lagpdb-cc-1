@@ -39,12 +39,6 @@ All neccessary informations are composed in an embed which gets edited according
 
 ### Reaction Interface
 
-#### Default Reaction Inferface
-![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
-
-#### Reaction Inferface With Pending Cancellation Request
-![Cancellation Inferface Image](https://media.discordapp.net/attachments/767771719720632350/775140298690134026/unknown.png)
-
 #### Reaction Menu
 * ❌ - Dismisses a report, you will be then prompted with the following;
     * ❗ - Warns the reporting user for a false report
@@ -54,6 +48,14 @@ All neccessary informations are composed in an embed which gets edited according
 * 👍 - Resolves reported issue
 * ✅ - Accepts cancellation request and closes report
 * 🚫 - Denies cancellation request and goes back to the default report reaction menu
+
+***
+
+#### Default Reaction Inferface
+![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
+
+#### Reaction Inferface With Pending Cancellation Request
+![Cancellation Inferface Image](https://media.discordapp.net/attachments/767771719720632350/775140298690134026/unknown.png)
 
 ***
 
