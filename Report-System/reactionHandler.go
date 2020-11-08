@@ -20,7 +20,6 @@
 {{$isMod := false}} {{range .Member.Roles}} {{if in $modRoles .}} {{$isMod = true}}{{end}}{{end}}
 {{$report := index (getMessage nil .Reaction.MessageID).Embeds 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
 {{if $isMod}}
-    {{$report.Set "Footer" (sdict "text" (print "Responsible Moderator: " .User.String) "icon_url" (.User.AvatarURL "256"))}}
     {{if (dbGet .Reaction.MessageID "ModeratorID")}}
         {{if eq .User.ID (toInt64 (dbGet .Reaction.MessageID "ModeratorID").Value)}}
             {{if eq .Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
