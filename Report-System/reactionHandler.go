@@ -20,7 +20,7 @@
 {{$isMod := false}} {{range .Member.Roles}} {{if in $modRoles .}} {{$isMod = true}}{{end}}{{end}}
 {{$report := index (getMessage nil .Reaction.MessageID).Embeds 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
 {{$report.Author.Set "icon_url" .Author.IconURL}}
-
+{{$report.Footer.Set "icon_url" .Footer.IconURL}}
 {{if $isMod}}
     {{if (dbGet .Reaction.MessageID "ModeratorID")}}
         {{if eq .User.ID (toInt64 (dbGet .Reaction.MessageID "ModeratorID").Value)}}
@@ -44,7 +44,7 @@
                 {{dbSet $user "key" "used"}}
             {{else if eq .Reaction.Emoji.Name "⚠️"}}{{/*Request info*/}}
                 {{if not (eq ((dbGet $user "key").Value) "used")}}{{/*Without cancellation request*/}}
-                    {{sendMessage $reportDiscussion (printf "<@%d>: More information has been requested. Please post it down below. %s" $user $mod)}}
+                    {{sendMessage $reportDiscussion (printf "<@%d>: More information was requested. Please post it down below. %s" $user $mod)}}
                     {{deleteAllMessageReactions nil .Reaction.MessageID}}
                     {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__More information requested.__")}}
                     {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Dismiss with ❌ or start investigation with 🛡️.")}}
@@ -53,7 +53,7 @@
                     {{addReactions "❌" "🛡️"}}
                 {{else}} 
                     {{/*With Cancellation request*/}}
-                    {{sendMessage $reportDiscussion (printf "<@%d>: More information regarding your cancellation has been requested. Please post it down below. %s" $user $mod)}}
+                    {{sendMessage $reportDiscussion (printf "<@%d>: More information regarding your cancellation was requested. Please post it down below. %s" $user $mod)}}
                     {{deleteAllMessageReactions nil .Reaction.MessageID}}
                     {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__More information requested.__")}}
                     {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Dismiss request with 🚫, or accept request __(and nullify report)__ with ✅")}}
@@ -62,7 +62,7 @@
                     {{addReactions "🚫" "✅"}}
                 {{end}}
             {{else if eq .Reaction.Emoji.Name "🚫"}}{{/*Dismissal of cancellation*/}}
-                {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation has been dismissed. %s" $user $mod)}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation was dismissed. %s" $user $mod)}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Cancellation request denied.__")}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" $reportGuide)}}
@@ -70,7 +70,7 @@
                 {{editMessage nil .Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "❌" "🛡️" "⚠️"}}
             {{else if eq .Reaction.Emoji.Name "✅"}}{{/*Cancellation approved*/}}
-                {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation has been accepted. %s" $user $mod)}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation was accepted. %s" $user $mod)}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Cancellation request accepted, report nullified.__")}}
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 3))}}
@@ -79,7 +79,7 @@
                 {{dbDel .Reaction.MessageID "ModeratorID"}}
                 {{addReactions "🏳️"}}
             {{else if eq .Reaction.Emoji.Name "👍"}}{{/*Report resolved*/}}
-                {{sendMessage $reportDiscussion (printf "<@%d>: Your report has been resolved. %s" $user $mod)}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your report was resolved. %s" $user $mod)}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report resolved.__")}}
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 3))}}
