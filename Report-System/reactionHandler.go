@@ -19,7 +19,6 @@
 {{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user)).Value|str)}}{{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}{{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
 {{$isMod := false}} {{range .Member.Roles}} {{if in $modRoles .}} {{$isMod = true}}{{end}}{{end}}
 {{$report := index (getMessage nil .Reaction.MessageID).Embeds 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
-{{$report.Author.Set "icon_url" .Author.IconURL}}
 {{if $isMod}}
     {{$report.Set "Footer" (sdict "text" (print "Responsible Moderator: " .User.String) "icon_url" (.User.AvatarURL "256"))}}
     {{if (dbGet .Reaction.MessageID "ModeratorID")}}
