@@ -26,6 +26,30 @@ All neccessary informations are composed in an embed which gets edited according
 9. YAGPDB will now set the database entries and respond with `Database primed, report numbers resetted, system is ready to use!`
 10. Done! Your super nifty report system is now ready to use!
 
+## Usage
+
+### Commands
+`-ru <User:Mention/ID> <Reason:Text>` - Sends the report. 
+
+`-cr <MessageID:Text> <Key:Text> <Reason:Text>` - Requests cancellation of the report with that ID in connotation of that key. Only works for the latest report.
+
+### Reaction Interface
+![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
+
+#### Reaction Menu
+* ❌ - Dismisses a report, you will be then prompted with the following;
+    * ❗ - Warns the reporting user for a false report
+    * 👌 - Closes report without any further action being taken
+* ⚠️ - Requests further information, either regarding the report or the cancellation request
+* 🛡️ - Starts Investigation of the reported issue
+* 👍 - Resolves reported issue
+* ✅ - Accepts cancellation request and closes report
+* 🚫 - Denies cancellation request and goes back to the default report reaction menu
+
+Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction to signalize a closed report.
+***
+
+
 ## The Commands
 ### reactionHandler.go
 [reactionHandler.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/reactionHandler.go) is the reaction listener and manages the editing of the report messages and user notifications. It is very fast. Like, *really* fast. If you react too eager on the message, it might break. Stay calm, nothing can happen. The report is safe as soon as the command is executed.
