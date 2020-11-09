@@ -55,12 +55,12 @@ Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction 
 
 #### Colour Coding
 Each state has its own colour, for once to make it easier on the eyes and also to make it easier for you and your staff team recognizing in what state each report is.
-* <span style="color:grey">Pending moderator, not reviewed yet.</span>.
-* <span style="color:magenta">Pending cancellation request</span>.
-* <span style="color:yellow">Under investigation</span>
-* <span style="color:blue">Information requested</span>
-* <span style="color:green">Report resolved (i.e. cancellation accepted, dismissal, action on reported user taken, and similar)</span>
-* <span style="color:red">Cancellation request denied (defaults then, but with moderator)</span>
+* <span style="color:grey"> Pending moderator, not reviewed yet </span>
+* <span style="color:magenta"> Pending cancellation request </span>
+* <span style="color:yellow"> Under investigation </span>
+* <span style="color:blue"> Information requested </span>
+* <span style="color:green"> Report resolved (i.e. cancellation accepted, dismissal, action on reported user taken, and similar) </span>
+* <span style="color:red"> Cancellation request denied (defaults then, but with moderator) </span>
 
 #### Default Reaction Inferface
 ![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
