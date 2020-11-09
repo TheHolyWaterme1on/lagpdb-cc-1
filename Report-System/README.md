@@ -3,28 +3,32 @@ These commands are **not** standalone. Add all the commands if you wish to use t
 These CCs allow you to create a report system with the ability for users to request cancellation/nullification of their reports and add some functionalities for staff utilizing reactions.
 All neccessary informations are composed in an embed which gets edited accordingly.
 
-## Functionality
-* Set logging channel where the reports are being logged into
-* Notify users about their actions being taken on their reports
-* Enable users to request cancellation of their latest report
-    * Set "talk-to-staff-channel" where users are being notified and can talk to the moderators
-* Edit report message to the current state (e.g. "under investigation")
-* Use reactions as menu options
-* Locking reactions to one staff member upon first reaction
+## Features
+* Logging channel where report messages are sent into
+* Notifying users about the current state of their report
+* Enabling users to request cancellation of their report, in case of a mistake
+* Utilization of reactions as menu options
+* Editing the report message appropiately
+
 
 ## Setting Up
-1. Disable the native report command in your `control panel > Tools & Utilities > Moderation`
-    * I also recommend creating a command override which disables that command, too
-2. Copy the ID of your report Logging channel (The one where the native report feature logs those reports into)
-3. Paste it in the config area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$reportLog`
-4. Copy the ID of your report-discussion channel (if you don't have one, make one!)
-5. Paste it in the config area of [cancelReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/cancelReport.go) `$reportDiscussion`
-6. Copy the IDs of the roles which are considered whatever your lowest staff rank is and all the above, paste them in the config area of [cancelReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/cancelReport.go) to `$modRoles`
-7. Copy the IDs of the roles which are considered admins, paste those in the config area of [cancelReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/cancelReport.go) to `$adminRoles`
-8. Run `-ru dbSetup` (**Case sensitive!**)
+
+##### Please follow this step-by-step guide precisely
+1. Disable the native report command, found here: `Control Panel > Tools & Utilities > Moderation`
+    * I also recommend to create a command override disabling this command aswell
+2. Copy the Channel-ID of the channel where you want your reports being logged into
+    * paste it in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$reportLog`
+4. Copy the Channel-ID of the channel where you want to notify your members about the current state of their report
+    *  paste it in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$reportDiscussion`
+5. Copy the Role-IDs of the roles which you consider administrators
+    * paste them one by one in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$adminRoles`
+    * Separate the IDs with spaces
+6. Copy the Role-IDs of the roles which you consider moderators
+    * Copy the Role-IDs of the admin roles aswell
+    * Paste them separated by spaces in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$modRoles`
+7. Run the case sensitive command `-ru dbSetup`
     * This command is restricted to admins only!
-9. YAGPDB will now set the database entries and respond with `Database primed, report numbers resetted, system is ready to use!`
-10. Done! Your super nifty report system is now ready to use!
+8. Done! YAGPDB.xyz will now take care of the rest and confirms setting up with an appropiate response
 
 ## Usage
 
@@ -34,7 +38,6 @@ All neccessary informations are composed in an embed which gets edited according
 `-cr <MessageID:Text> <Key:Text> <Reason:Text>` - Requests cancellation of the report with that ID in connotation of that key. Only works for the latest report.
 
 ### Reaction Interface
-![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
 
 #### Reaction Menu
 * ❌ - Dismisses a report, you will be then prompted with the following;
@@ -46,8 +49,17 @@ All neccessary informations are composed in an embed which gets edited according
 * ✅ - Accepts cancellation request and closes report
 * 🚫 - Denies cancellation request and goes back to the default report reaction menu
 
-Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction to signalize a closed report.
 ***
+
+#### Default Reaction Inferface
+![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
+
+#### Reaction Inferface With Pending Cancellation Request
+![Cancellation Inferface Image](https://media.discordapp.net/attachments/767771719720632350/775140298690134026/unknown.png)
+
+***
+
+Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction to signalize a closed report.
 
 
 ## The Commands
