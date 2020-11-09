@@ -13,7 +13,10 @@ All neccessary informations are composed in an embed which gets edited according
 
 ## Setting Up
 
-##### Please follow this step-by-step guide precisely
+### Preface
+Make for each custom command file a separate custom command, preferrably in the same category to keep them neat and organized. Please make sure to follow each step precisely and to use the correct trigger and trigger type, aswell.
+
+#### These are the neccessary steps:
 1. Disable the native report command, found here: `Control Panel > Tools & Utilities > Moderation`
     * I also recommend to create a command override disabling this command aswell
 2. Copy the Channel-ID of the channel where you want your reports being logged into
@@ -31,14 +34,12 @@ All neccessary informations are composed in an embed which gets edited according
 8. Done! YAGPDB.xyz will now take care of the rest and confirms setting up with an appropiate response
 
 ## Usage
-
 ### Commands
 `-ru <User:Mention/ID> <Reason:Text>` - Sends the report. 
 
 `-cr <MessageID:Text> <Key:Text> <Reason:Text>` - Requests cancellation of the report with that ID in connotation of that key. Only works for the latest report.
 
-### Reaction Interface
-
+### Interface
 #### Reaction Menu
 * ❌ - Dismisses a report, you will be then prompted with the following;
     * ❗ - Warns the reporting user for a false report
@@ -50,6 +51,16 @@ All neccessary informations are composed in an embed which gets edited according
 * 🚫 - Denies cancellation request and goes back to the default report reaction menu
 
 ***
+Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction to signalize a closed report.
+
+#### Colour Coding
+Each state has its own colour, for once to make it easier on the eyes and also to make it easier for you and your staff team recognizing in what state each report is.
+* ![#808080](https://via.placeholder.com/15/808080/000000?text=+) Pending moderator, not reviewed yet 
+* ![#FF00FF](https://via.placeholder.com/15/FF00FF/000000?text=+) Pending cancellation request 
+* ![#FFFF00](https://via.placeholder.com/15/FFFF00/000000?text=+) Under investigation 
+* ![#0000FF](https://via.placeholder.com/15/0000FF/000000?text=+) Information requested
+* ![#00FF00](https://via.placeholder.com/15/00FF00/000000?text=+) Report resolved (i.e. cancellation accepted, dismissal, action on reported user taken, and similar)
+* ![#FF0000](https://via.placeholder.com/15/FF0000/000000?text=+) Cancellation request denied (defaults then, but with moderator) 
 
 #### Default Reaction Inferface
 ![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
@@ -57,9 +68,6 @@ All neccessary informations are composed in an embed which gets edited according
 #### Reaction Inferface With Pending Cancellation Request
 ![Cancellation Inferface Image](https://media.discordapp.net/attachments/767771719720632350/775140298690134026/unknown.png)
 
-***
-
-Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction to signalize a closed report.
 
 
 ## The Commands

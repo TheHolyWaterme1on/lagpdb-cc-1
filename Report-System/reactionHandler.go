@@ -92,6 +92,7 @@
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed, warned for false report.__")}}
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
+                {{$report.Set "color" 65280}}
                 {{editMessage nil .Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{dbDel .Reaction.MessageID "ModeratorID"}}
                 {{addReactions "🏳️"}}
@@ -99,6 +100,7 @@
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed, no further action taken.__")}}
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
+                {{$report.Set "color" 65280}}
                 {{editMessage nil .Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{dbDel .Reaction.MessageID "ModeratorID"}}
                 {{addReactions "🏳️"}}
