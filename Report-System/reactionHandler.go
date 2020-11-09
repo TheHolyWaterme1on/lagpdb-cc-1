@@ -22,6 +22,7 @@
 {{$report.Author.Set "icon_url" .Author.IconURL}}
 
 {{if $isMod}}
+    {{$report.Set "Footer" (sdict "text" (print "Responsible Moderator: " .User.String) "icon_url" (.User.AvatarURL "256"))}}
     {{if (dbGet .Reaction.MessageID "ModeratorID")}}
         {{if eq .User.ID (toInt64 (dbGet .Reaction.MessageID "ModeratorID").Value)}}
             {{if eq .Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
