@@ -55,12 +55,12 @@ Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction 
 
 #### Colour Coding
 Each state has its own colour, for once to make it easier on the eyes and also to make it easier for you and your staff team recognizing in what state each report is.
-* Pending moderator, not reviewed yet
-* Pending cancellation request
-* Under investigation
-* Information requested
-* Report resolved (i.e. cancellation accepted, dismissal, action on reported user taken, and similar)
-* Cancellation request denied (defaults then, but with moderator)
+* Pending moderator, not reviewed yet ![#FF00FF](https://via.placeholder.com/15/FF00FF/000000?text=+)
+* Pending cancellation request ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
+* Under investigation ![#FFFF00](https://via.placeholder.com/15/FFFF00/000000?text=+)
+* Information requested ![#0000FF](https://via.placeholder.com/15/0000FF/000000?text=+)
+* Report resolved (i.e. cancellation accepted, dismissal, action on reported user taken, and similar) ![#00FF00](https://via.placeholder.com/15/00FF00/000000?text=+)
+* Cancellation request denied (defaults then, but with moderator) ![#FF0000](https://via.placeholder.com/15/FF0000/000000?text=+)
 
 #### Default Reaction Inferface
 ![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
