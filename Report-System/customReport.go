@@ -74,6 +74,8 @@
         {{sendMessage nil "User reported to the proper authorites!"}}
         {{dbSet .User.ID "key" $secret}}
         {{dbSet $x "reportAuthor" (toString .User.ID)}}
+        {{deleteTrigger}}
+        {{deleteResponse}}
         {{sendDM (printf "User reported to the proper authorities! If you wish to cancel your report, simply type `-cancelr %d %s` in any channel.\n **A reason is required.**" $x $secret)}}
     {{end}}
 {{end}}
