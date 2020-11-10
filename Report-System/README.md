@@ -3,6 +3,26 @@ These commands are **not** standalone. Add all the commands if you wish to use t
 These CCs allow you to create a report system with the ability for users to request cancellation/nullification of their reports and add some functionalities for staff utilizing reactions.
 All neccessary informations are composed in an embed which gets edited accordingly.
 
+# Table of Contents
+<details>
+<summary>Table of Contents</summary>
+
+* [Features](#Features)
+* [Setting Up](#Setting_Up)
+    * [Preface](#Preface)
+* [Usage](#Usage)
+    * [Interface](#ReactionMenu)
+        * [Reaction Menu](#ReactionMenu)
+        * [Colour Coding](#ColourCoding)
+        * [Default Reaction Inferface](#DefaultReactionInferface)
+        * [Pending Cancellation Request](#PendingCancellationRequest)
+* [The Commands](#TheCommands)
+    * [reactionHandler.go](#reactionHandler.go)
+    * [customReport.go](#customReport.go)
+    * [cancelReport.go](#cancelReport.go)
+* [Small Disclaimer](#SmallDisclaimerAndInformation)
+</details>
+
 ## Features
 * Logging channel where report messages are sent into
 * Notifying users about the current state of their report
@@ -65,7 +85,7 @@ Each state has its own colour, for once to make it easier on the eyes and also t
 #### Default Reaction Inferface
 ![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
 
-#### Reaction Inferface With Pending Cancellation Request
+#### Pending Cancellation Request
 ![Cancellation Inferface Image](https://media.discordapp.net/attachments/767771719720632350/775140298690134026/unknown.png)
 
 
