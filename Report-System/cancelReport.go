@@ -29,7 +29,7 @@
                     {{$userReportString := (dbGet 2000 (printf "userReport%d" .User.ID)).Value|str}}
                     {{$cancelGuide := (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️.")}}
                     {{dbSet 2000 "cancelGuideBasic" $cancelGuide}}
-                    {{$userCancelString := (printf "Cancellation of this report was request. \n Reason: `%s`" $reason)}}
+                    {{$userCancelString := (printf "Cancellation of this report was requested. \n Reason: `%s`" $reason)}}
                     {{$combinedString := (print $userReportString " \n " $userCancelString)}}
                     {{dbSet 2000 (printf "userCancel%d" .User.ID) $userCancelString}}
                     {{$report := index (getMessage $reportLog $reportMessageID).Embeds 0|structToSdict}}
