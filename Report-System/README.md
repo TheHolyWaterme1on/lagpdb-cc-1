@@ -3,6 +3,26 @@ These commands are **not** standalone. Add all the commands if you wish to use t
 These CCs allow you to create a report system with the ability for users to request cancellation/nullification of their reports and add some functionalities for staff utilizing reactions.
 All neccessary informations are composed in an embed which gets edited accordingly.
 
+# Table of Contents
+<details>
+<summary>Table of Contents</summary>
+
+* [Features](#Features)
+* [Setting Up](#Setting-Up)
+    * [Preface](#Preface)
+* [Usage](#Usage)
+    * [Interface](#Interface)
+        * [Reaction Menu](#Reaction-Menu)
+        * [Colour Coding](#Colour-Coding)
+        * [Default Reaction Inferface](#Default-Reaction-Inferface)
+        * [Pending Cancellation Request](#Pending-Cancellation-Request)
+* [The Commands](#The-Commands)
+    * [reactionHandler.go](#reactionHandler.go)
+    * [customReport.go](#customReport.go)
+    * [cancelReport.go](#cancelReport.go)
+* [Small Disclaimer](#Small-Disclaimer-And-Information)
+</details>
+
 ## Features
 * Logging channel where report messages are sent into
 * Notifying users about the current state of their report
@@ -12,7 +32,6 @@ All neccessary informations are composed in an embed which gets edited according
 
 
 ## Setting Up
-
 ### Preface
 Make for each custom command file a separate custom command, preferrably in the same category to keep them neat and organized. Please make sure to follow each step precisely and to use the correct trigger and trigger type, aswell.
 
@@ -55,6 +74,7 @@ Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction 
 
 #### Colour Coding
 Each state has its own colour, for once to make it easier on the eyes and also to make it easier for you and your staff team recognizing in what state each report is.
+
 * ![#808080](https://via.placeholder.com/15/808080/000000?text=+) Pending moderator, not reviewed yet 
 * ![#FF00FF](https://via.placeholder.com/15/FF00FF/000000?text=+) Pending cancellation request 
 * ![#FFFF00](https://via.placeholder.com/15/FFFF00/000000?text=+) Under investigation 
@@ -62,10 +82,11 @@ Each state has its own colour, for once to make it easier on the eyes and also t
 * ![#00FF00](https://via.placeholder.com/15/00FF00/000000?text=+) Report resolved (i.e. cancellation accepted, dismissal, action on reported user taken, and similar)
 * ![#FF0000](https://via.placeholder.com/15/FF0000/000000?text=+) Cancellation request denied (defaults then, but with moderator) 
 
+
 #### Default Reaction Inferface
 ![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
 
-#### Reaction Inferface With Pending Cancellation Request
+#### Pending Cancellation Request
 ![Cancellation Inferface Image](https://media.discordapp.net/attachments/767771719720632350/775140298690134026/unknown.png)
 
 
