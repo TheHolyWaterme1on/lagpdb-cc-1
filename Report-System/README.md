@@ -8,19 +8,19 @@ All neccessary informations are composed in an embed which gets edited according
 <summary>Table of Contents</summary>
 
 * [Features](#Features)
-* [Setting Up](#Setting_Up)
+* [Setting Up](#Setting-Up)
     * [Preface](#Preface)
 * [Usage](#Usage)
-    * [Interface](#ReactionMenu)
-        * [Reaction Menu](#ReactionMenu)
-        * [Colour Coding](#ColourCoding)
-        * [Default Reaction Inferface](#DefaultReactionInferface)
-        * [Pending Cancellation Request](#PendingCancellationRequest)
-* [The Commands](#TheCommands)
+    * [Interface](#Interface)
+        * [Reaction Menu](#Reaction-Menu)
+        * [Colour Coding](#Colour-Coding)
+        * [Default Reaction Inferface](#Default-Reaction-Inferface)
+        * [Pending Cancellation Request](#Pending-Cancellation-Request)
+* [The Commands](#The-Commands)
     * [reactionHandler.go](#reactionHandler.go)
     * [customReport.go](#customReport.go)
     * [cancelReport.go](#cancelReport.go)
-* [Small Disclaimer](#SmallDisclaimerAndInformation)
+* [Small Disclaimer](#Small-Disclaimer-And-Information)
 </details>
 
 ## Features
