@@ -38,11 +38,13 @@
                             {{$report.Set $k (structToSdict $v)}}
                         {{end}}
                     {{end}}
+                    {{$user := userArg (dbGet $reportMessageID "reportAuthor").Value}}
                     {{with $report}}
                         {{.Author.Set "Icon_URL" $report.Author.IconURL}} 
                         {{.Footer.Set "Icon_URL" $report.Footer.IconURL}}
                         {{.Set "description" $combinedString}}
                         {{.Set "color" 16711935}}
+                        {{$.Set "Author" (sdict "text" (print $user.String "(ID" $user.ID ")") "icon_url" ($user.AvatarURL "256"))}}
                         {{.Set "Fields" ((cslice).AppendSlice .Fields)}}{{.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" $cancelGuide)}}
                     {{end}}
                     {{editMessage $reportLog $reportMessageID (complexMessageEdit "embed" $report)}}
