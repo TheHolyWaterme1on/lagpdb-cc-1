@@ -4,9 +4,7 @@
     This custom command manages the reaction menu.
     Make this in a seperate Reaction CC, due to its massive character count.
     Remove this leading comment once you added this command.
-
     Obligatory Trigger type and trigger: Reaction; added reactions only.
-
     Created by: Olde#7325
 */}}
 {{/*ACTUAL CODE*/}}
@@ -15,8 +13,8 @@
 {{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
 {{if eq .Reaction.ChannelID $reportLog}}
 {{/*Set some vars, cutting down on DB stuff, Readability shit*/}}
-{{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}{{$user := (toInt64 (dbGet .Reaction.MessageID "reportAuthor").Value)}}{{$userReportString := ((dbGet 2000 (printf "userReport%d" $user)).Value|str)}}
-{{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user)).Value|str)}}{{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}{{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
+{{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}{{$user := userArg (dbGet .Reaction.MessageID "reportAuthor").Value}}{{$userReportString := ((dbGet 2000 (printf "userReport%d" $user.ID)).Value|str)}}
+{{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user.ID)).Value|str)}}{{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}{{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
 {{$isMod := false}} {{range .Member.Roles}} {{if in $modRoles .}} {{$isMod = true}}{{end}}{{end}}
 {{$report := index (getMessage nil .Reaction.MessageID).Embeds 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
 {{if $isMod}}
@@ -25,14 +23,14 @@
     {{if (dbGet .Reaction.MessageID "ModeratorID")}}
         {{if eq .User.ID (toInt64 (dbGet .Reaction.MessageID "ModeratorID").Value)}}
             {{if eq .Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
-                {{sendMessage $reportDiscussion (printf "<@%d>: Your report was dismissed. %s" $user $mod)}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your report was dismissed. %s" $user.ID $mod)}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed.__")}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Warn for `False report` with ❗ or finish without warning with 👌.")}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil .Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "❗" "👌"}}
-                {{dbSet $user "key" "used"}}
+                {{dbSet $user.ID "key" "used"}}
             {{else if eq .Reaction.Emoji.Name "🛡️"}}{{/*Taking care*/}}
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user $mod)}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
@@ -41,9 +39,9 @@
                 {{$report.Set "color" 16776960}}
                 {{editMessage nil .Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "❌" "👍"}}
-                {{dbSet $user "key" "used"}}
+                {{dbSet $user.ID "key" "used"}}
             {{else if eq .Reaction.Emoji.Name "⚠️"}}{{/*Request info*/}}
-                {{if not (eq ((dbGet $user "key").Value) "used")}}{{/*Without cancellation request*/}}
+                {{if ne (dbGet $user.ID "key").Value "used"}}{{/*Without cancellation request*/}}
                     {{sendMessage $reportDiscussion (printf "<@%d>: More information was requested. Please post it down below. %s" $user $mod)}}
                     {{deleteAllMessageReactions nil .Reaction.MessageID}}
                     {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__More information requested.__")}}
@@ -88,7 +86,7 @@
                 {{dbDel .Reaction.MessageID "ModeratorID"}}
                 {{addReactions "🏳️"}}
             {{else if eq .Reaction.Emoji.Name "❗"}}
-                {{$silent := exec "warn" $user "False Report."}}
+                {{$silent := exec "warn" $user.ID "False Report."}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed, warned for false report.__")}}
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}

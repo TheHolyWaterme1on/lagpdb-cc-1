@@ -21,7 +21,7 @@
 
 
 {{/*ACTUAL CODE*/}}
-{{$isAdmin := false}} {{range .Member.Roles}} {{if in $adminRoles .}} {{$isAdmin = true}} {{end}} {{end}}
+{{$isAdmin := false}}{{range .Member.Roles}}{{if in $adminRoles .}}{{$isAdmin = true}}{{end}}{{end}}
 {{if (eq (len .CmdArgs) 1)}}
     {{if eq (index .CmdArgs 0) "dbSetup"}}
         {{if $isAdmin}}
@@ -54,7 +54,7 @@
         {{$reportGuide := (printf "\nDismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️.")}}
         {{$userReportString := (printf  "<@%d> reported <@%d> in <#%d>." .User.ID $user.ID .Channel.ID)}}
         {{dbSet 2000 "reportGuideBasic" $reportGuide}}
-        {{dbSet 2000 (printf "userReport%d" .User.ID) $userReportString}}
+        {{dbSet .User.ID "userReport" $userReportString}}
         {{$reportNo := dbIncr 2000 "ReportNo" 1}}
         {{$reportEmbed := cembed "title" (print "Report No. " $reportNo)
             "author" (sdict "name" (printf "%s (ID %d)" .User.String .User.ID) "icon_url" (.User.AvatarURL "256"))
@@ -73,7 +73,7 @@
         {{addMessageReactions $reportLog $x "❌" "🛡️" "⚠️"}}
         {{sendMessage nil "User reported to the proper authorites!"}}
         {{dbSet .User.ID "key" $secret}}
-        {{dbSet $x "reportAuthor" (toString .User.ID)}}
+        {{dbSet $x "reportAuthor" (toString .User.Mention)}}
         {{deleteTrigger}}
         {{deleteResponse}}
         {{sendDM (printf "User reported to the proper authorities! If you wish to cancel your report, simply type `-cancelr %d %s` in any channel.\n **A reason is required.**" $x $secret)}}
