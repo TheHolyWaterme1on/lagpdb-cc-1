@@ -25,15 +25,12 @@
 {{if (eq (len .CmdArgs) 1)}}
     {{if eq (index .CmdArgs 0) "dbSetup"}}
         {{if $isAdmin}}
-            {{if not (and (dbGet 2000 "reportLog") (dbGet 2000 "reportDiscussion") (dbGet 2000 "modRoles") (dbGet 2000 "adminRoles") (eq (toInt (dbGet 2000 "ReportNo").Value) 0))}}
                 {{dbSet 2000 "reportLog" (toString $reportLog)}}
                 {{dbSet 2000 "reportDiscussion" (toString $reportDiscussion)}}
                 {{dbSet 2000 "modRoles" $modRoles}}
                 {{dbSet 2000 "adminRoles" $adminRoles}}
                 {{dbSet 2000 "ReportNo" 0}}
                 {{sendMessage nil "**Database primed, report numbers resetted, system is ready to use!**"}}
-            {{else}}
-                {{sendMessage nil "**Database entries already exist! No action taken, system still ready to use.**"}}
             {{end}}
         {{else}}
             {{sendMessage nil "You do not have permission to use this command!"}}
