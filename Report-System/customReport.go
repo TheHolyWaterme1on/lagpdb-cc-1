@@ -31,7 +31,6 @@
                 {{dbSet 2000 "adminRoles" $adminRoles}}
                 {{dbSet 2000 "ReportNo" 0}}
                 {{sendMessage nil "**Database primed, report numbers resetted, system is ready to use!**"}}
-            {{end}}
         {{else}}
             {{sendMessage nil "You do not have permission to use this command!"}}
         {{end}}
