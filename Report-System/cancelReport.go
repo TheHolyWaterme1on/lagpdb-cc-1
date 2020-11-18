@@ -21,7 +21,8 @@
     {{$reportMessageID := ((index .CmdArgs 0)|toInt64)}}
     {{if eq (toInt64 (dbGet $reportMessageID "reportAuthor").Value) (toInt64 .User.ID)}}
             {{if eq "used" $userKey}}
-                Your latest report already has been cancelled!
+                {{$response := sendMessageRetID nil "Your latest report was already cancelled!"}}
+                {{deleteMessage nil $response}}
             {{else}}
             {{if eq (index .CmdArgs 1|str) $userKey}}
                 {{if ge (len .CmdArgs) 3}}
@@ -54,10 +55,12 @@
                     {{dbSet .User.ID "key" "used"}}
                 {{end}}
             {{else}}
-                Invalid key provided!
+                {{$response := sendMessageRetID nil "Invalid key provided!"}}
+                {{deleteMessage nil $response}}
             {{end}}
         {{end}}
         {{else}}
-            You are not the author of this report!
+            {{$response := sendMessageRetID nil "You are not the author of this report!"}}
+            {{deleteMessage nil $response}}
     {{end}}
 {{end}}

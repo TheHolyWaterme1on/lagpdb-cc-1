@@ -111,7 +111,7 @@
         {{dbSet .Reaction.MessageID "ModeratorID" (toString .User.ID)}}
         {{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
         {{$tempMessage := sendMessageRetID nil (printf "<@%d>: No moderator detected, you claimed this report now. Your reactions were reset, please redo. Thanks ;)" .User.ID)}}
-        {{deleteMessage nil $tempMessage 15}}
+        {{deleteMessage nil $tempMessage 5}}
         {{$report.Set "Footer" (sdict "text" (print "Responsible Moderator: " .User.String) "icon_url" (.User.AvatarURL "256"))}}
         {{editMessage nil .Reaction.MessageID (complexMessageEdit "embed" $report)}}{{end}}
     {{end}}

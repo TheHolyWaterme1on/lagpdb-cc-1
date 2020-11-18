@@ -67,11 +67,11 @@
         }}
         {{$x := sendMessageRetID $reportLog $reportEmbed}}
         {{addMessageReactions $reportLog $x "❌" "🛡️" "⚠️"}}
-        {{sendMessage nil "User reported to the proper authorites!"}}
+        {{$response := sendMessageRetID nil "User reported to the proper authorites!"}}
         {{dbSet .User.ID "key" $secret}}
         {{dbSet $x "reportAuthor" (toString .User.Mention)}}
         {{deleteTrigger}}
-        {{deleteResponse}}
+        {{deleteMessage nil $response}}
         {{sendDM (printf "User reported to the proper authorities! If you wish to cancel your report, simply type `-cancelr %d %s` in any channel.\n **A reason is required.**" $x $secret)}}
     {{end}}
 {{end}}
