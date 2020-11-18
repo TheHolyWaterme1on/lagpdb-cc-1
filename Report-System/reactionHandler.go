@@ -32,7 +32,7 @@
                 {{addReactions "❗" "👌"}}
                 {{dbSet $user.ID "key" "used"}}
             {{else if eq .Reaction.Emoji.Name "🛡️"}}{{/*Taking care*/}}
-                {{sendMessage $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user $mod)}}
+                {{sendMessage $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user.ID $mod)}}
                 {{deleteAllMessageReactions nil .Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Under investigation.__")}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Dismiss with ❌ or resolve with 👍.")}}
