@@ -1,13 +1,3 @@
-{{/*
-    This handy-dandy custom command-bundle allows a user to cancel their most recent report and utilizes
-    Reactions to make things easier for staff.
-    This custom command manages the reaction menu.
-    Make this in a seperate Reaction CC, due to its massive character count.
-    Remove this leading comment once you added this command.
-    Obligatory Trigger type and trigger: Reaction; added reactions only.
-    Created by: Olde#7325
-*/}}
-{{/*ACTUAL CODE*/}}
 {{/*Validation steps*/}}
 {{$reportLog := (dbGet 2000 "reportLog").Value|toInt64}}
 {{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
@@ -16,7 +6,7 @@
 {{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}{{$user := userArg (dbGet .Reaction.MessageID "reportAuthor").Value}}{{$userReportString := ((dbGet 2000 (printf "userReport%d" $user.ID)).Value|str)}}
 {{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user.ID)).Value|str)}}{{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}{{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
 {{$isMod := false}} {{range .Member.Roles}} {{if in $modRoles .}} {{$isMod = true}}{{end}}{{end}}
-{{$report := index (getMessage nil .Reaction.MessageID).Embeds 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
+{{with .Message.Embeds}}{{$report := index .Embeds 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
 {{if $isMod}}
     {{$report.Set "Footer" (sdict "text" (print "Responsible Moderator: " .User.String) "icon_url" (.User.AvatarURL "256"))}}
     {{$report.Set "Author" (sdict "text" (print $user.String "(ID" $user.ID ")") "icon_url" ($user.AvatarURL "256"))}}
@@ -117,4 +107,4 @@
     {{end}}
 {{else}}
 {{deleteMessageReaction nil .Reaction.MessageID .User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
-{{end}}{{end}}
+{{end}}{{end}}{{else}}{{end}}
