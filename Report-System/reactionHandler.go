@@ -16,7 +16,7 @@
 {{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}{{$user := userArg (dbGet .Reaction.MessageID "reportAuthor").Value}}{{$userReportString := ((dbGet 2000 (printf "userReport%d" $user.ID)).Value|str)}}
 {{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user.ID)).Value|str)}}{{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}{{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
 {{$isMod := false}} {{range .Member.Roles}} {{if in $modRoles .}} {{$isMod = true}}{{end}}{{end}}
-{{with .Message.Embeds}}{{$report := index .Embeds 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
+{{with .Message}}{{$report := index .Embeds 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
 {{if $isMod}}
     {{$report.Set "Footer" (sdict "text" (print "Responsible Moderator: " .User.String) "icon_url" (.User.AvatarURL "256"))}}
     {{$report.Set "Author" (sdict "text" (print $user.String "(ID" $user.ID ")") "icon_url" ($user.AvatarURL "256"))}}
