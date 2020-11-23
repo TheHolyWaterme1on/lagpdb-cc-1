@@ -1,3 +1,13 @@
+{{/*
+    This handy-dandy custom command-bundle allows a user to cancel their most recent report and utilizes
+    Reactions to make things easier for staff.
+    This custom command manages the reaction menu.
+    Make this in a seperate Reaction CC, due to its massive character count.
+    Remove this leading comment once you added this command.
+    Obligatory Trigger type and trigger: Reaction; added reactions only.
+    Created by: Olde#7325
+*/}}
+{{/*ACTUAL CODE*/}}
 {{/*Validation steps*/}}
 {{$reportLog := (dbGet 2000 "reportLog").Value|toInt64}}
 {{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
