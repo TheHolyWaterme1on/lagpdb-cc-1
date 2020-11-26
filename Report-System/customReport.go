@@ -22,7 +22,7 @@
 
 {{/*ACTUAL CODE*/}}
 {{$isAdmin := false}}{{range .Member.Roles}}{{if in $adminRoles .}}{{$isAdmin = true}}{{end}}{{end}}
-{{if (eq (len .CmdArgs) 1)}}
+{{if (lt (len .CmdArgs) 2)}}
     {{if eq (index .CmdArgs 0) "dbSetup"}}
         {{if $isAdmin}}
                 {{dbSet 2000 "reportLog" (toString $reportLog)}}
@@ -34,9 +34,9 @@
         {{else}}
             {{sendMessage nil "You do not have permission to use this command!"}}
         {{end}}
-    {{end}}
-{{else if not (ge (len .CmdArgs) 2)}}
+    {{else}}
     {{sendMessage nil (printf "```%s <User:Mention/ID> <Reason:Text>``` \n Not enough arguments passed." .Cmd)}}
+    {{end}}
 {{else}}
     {{$user := userArg (index .CmdArgs 0)}}
     {{if eq $user.ID .User.ID}}

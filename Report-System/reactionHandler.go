@@ -1,12 +1,3 @@
-{{/*
-    This handy-dandy custom command-bundle allows a user to cancel their most recent report and utilizes
-    Reactions to make things easier for staff.
-    This custom command manages the reaction menu.
-    Make this in a seperate Reaction CC, due to its massive character count.
-    Remove this leading comment once you added this command.
-    Obligatory Trigger type and trigger: Reaction; added reactions only.
-    Created by: Olde#7325
-*/}}
 {{/*ACTUAL CODE*/}}
 {{/*Validation steps*/}}
 {{$reportLog := (dbGet 2000 "reportLog").Value|toInt64}}
@@ -16,11 +7,12 @@
 {{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}{{$user := userArg (dbGet .Reaction.MessageID "reportAuthor").Value}}{{$userReportString := ((dbGet 2000 (printf "userReport%d" $user.ID)).Value|str)}}
 {{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user.ID)).Value|str)}}{{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}{{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
 {{$isMod := false}} {{range .Member.Roles}} {{if in $modRoles .}} {{$isMod = true}}{{end}}{{end}}
-{{with .Message.Embeds}}{{$report := index . 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
+{{with .ReactionMessage.Embeds}}{{$report := index . 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
+{{$embed := (index $.ReactionMessage.Embeds 0)}}
 {{if $isMod}}
     {{$report.Set "Footer" (sdict "text" (print "Responsible Moderator: " $.User.String) "icon_url" ($.User.AvatarURL "256"))}}
     {{$report.Set "Author" (sdict "text" (print $user.String "(ID" $user.ID ")") "icon_url" ($user.AvatarURL "256"))}}
-    {{if (dbGet $.Reaction.MessageID "ModeratorID")}}
+    {{if (reFind $.User.String $embed.Footer.Text)}}
         {{if eq $.User.ID (toInt64 (dbGet $.Reaction.MessageID "ModeratorID").Value)}}
             {{if eq $.Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your report was dismissed. %s" $user.ID $mod)}}
@@ -74,7 +66,6 @@
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
-                {{dbDel $.Reaction.MessageID "ModeratorID"}}
                 {{addReactions "🏳️"}}
             {{else if eq $.Reaction.Emoji.Name "👍"}}{{/*Report resolved*/}}
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your report was resolved. %s" $user.ID $mod)}}
@@ -83,7 +74,6 @@
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
-                {{dbDel $.Reaction.MessageID "ModeratorID"}}
                 {{addReactions "🏳️"}}
             {{else if eq $.Reaction.Emoji.Name "❗"}}
                 {{$silent := exec "warn" $user.ID "False Report."}}
@@ -92,7 +82,6 @@
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
-                {{dbDel $.Reaction.MessageID "ModeratorID"}}
                 {{addReactions "🏳️"}}
             {{else if eq $.Reaction.Emoji.Name "👌"}}
                 {{deleteAllMessageReactions nil $.Reaction.MessageID}}
@@ -100,17 +89,15 @@
                 {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
-                {{dbDel $.Reaction.MessageID "ModeratorID"}}
                 {{addReactions "🏳️"}}
             {{end}}
         {{else}}
             {{deleteMessageReaction nil $.Reaction.MessageID $.User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
         {{end}}
     {{else}}
-        {{if ne $.Reaction.Emoji.Name "🏳️"}}
-        {{dbSet $.Reaction.MessageID "ModeratorID" (toString $.User.ID)}}
+        {{if and (ne $.Reaction.Emoji.Name "🏳️") (reFind "•" $embed.Footer.Text)}}
         {{deleteMessageReaction nil $.Reaction.MessageID $.User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
-        {{$tempMessage := sendMessageRetID nil (printf "<@%d>: No moderator detected, you claimed this report now. Your reactions were reset, please redo. Thanks ;)" $.User.ID)}}
+        {{$tempMessage := sendMessageRetID nil (printf "<@%d>: No moderator yet, you claimed this report now. Your reactions were reset, please redo. Thanks ;)" $.User.ID)}}
         {{deleteMessage nil $tempMessage 5}}
         {{$report.Set "Footer" (sdict "text" (print "Responsible Moderator: " $.User.String) "icon_url" ($.User.AvatarURL "256"))}}
         {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}{{end}}
