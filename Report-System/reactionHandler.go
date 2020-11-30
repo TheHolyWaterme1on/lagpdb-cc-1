@@ -4,8 +4,8 @@
 {{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
 {{if eq .Reaction.ChannelID $reportLog}}
 {{/*Set some vars, cutting down on DB stuff, Readability shit*/}}
-{{$reportGuide := ((dbGet 2000 "reportGuideBasic").Value|str)}}{{$user := userArg (dbGet .Reaction.MessageID "reportAuthor").Value}}{{$userReportString := ((dbGet 2000 (printf "userReport%d" $user.ID)).Value|str)}}
-{{$userCancelString := ((dbGet 2000 (printf "userCancel%d" $user.ID)).Value|str)}}{{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}{{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
+{{$user := userArg (dbGet .Reaction.MessageID "reportAuthor").Value}}{{$userReportString := ((dbGet 2000 (printf "userReport%d" $user.ID)).Value|str)}}
+{{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}{{$modRoles := (cslice).AppendSlice (dbGet 2000 "modRoles").Value}}
 {{$isMod := false}} {{range .Member.Roles}} {{if in $modRoles .}} {{$isMod = true}}{{end}}{{end}}
 {{with .ReactionMessage.Embeds}}{{$report := index . 0|structToSdict}}{{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
 {{$embed := (index $.ReactionMessage.Embeds 0)}}
@@ -55,7 +55,7 @@
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation was dismissed. %s" $user.ID $mod)}}
                 {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Cancellation request denied.__")}}
-                {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" $reportGuide)}}
+                {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Dismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️.")}}
                 {{$report.Set "color" 16711680}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "❌" "🛡️" "⚠️"}}

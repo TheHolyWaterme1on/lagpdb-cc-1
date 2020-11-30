@@ -49,7 +49,6 @@
         {{$reason := joinStr " " (slice .CmdArgs 1)}}
         {{$reportGuide := (printf "\nDismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️.")}}
         {{$userReportString := (printf  "<@%d> reported <@%d> in <#%d>." .User.ID $user.ID .Channel.ID)}}
-        {{dbSet 2000 "reportGuideBasic" $reportGuide}}
         {{dbSet .User.ID "userReport" $userReportString}}
         {{$reportNo := dbIncr 2000 "ReportNo" 1}}
         {{$reportEmbed := cembed "title" (print "Report No. " $reportNo)
