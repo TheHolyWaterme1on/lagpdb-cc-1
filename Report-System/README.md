@@ -7,8 +7,6 @@ All neccessary information is arranged in an embed which is edited accordingly.
 <details>
 <summary>Table of Contents</summary>
 
-<div class="none"></div>
-
 * [Features](#Features)
 * [Setting Up](#Setting-Up)
     * [Preface](#Preface)
@@ -72,6 +70,7 @@ Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction 
 #### Colour Coding
 Each state has its own colour, for one to make it easier on the eyes and also to make it easier for you and your staff team recognizing in what state each report is.
 
+<div class="none"></div>
 * ![#808080](https://via.placeholder.com/15/808080/000000?text=+) Pending moderator review
 * ![#FF00FF](https://via.placeholder.com/15/FF00FF/000000?text=+) Pending cancellation request 
 * ![#FFFF00](https://via.placeholder.com/15/FFFF00/000000?text=+) Under investigation 
