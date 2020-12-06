@@ -8,6 +8,7 @@ All neccessary information is arranged in an embed which is edited accordingly.
 <summary>Table of Contents</summary>
 
 <div class="none"></div>
+
 * [Features](#Features)
 * [Setting Up](#Setting-Up)
     * [Preface](#Preface)
