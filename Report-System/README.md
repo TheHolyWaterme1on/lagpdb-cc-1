@@ -22,6 +22,7 @@ All neccessary information is arranged in an embed which is edited accordingly.
 * Logging channel where report messages are sent into
 * Notifies users about the current state of their report
 * Enables users to request cancellation of their latest report
+* Shows report history of the reported user
 * Utilizes of reactions as menu options
 * Edits the report message appropiately
 
