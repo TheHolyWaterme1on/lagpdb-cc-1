@@ -108,6 +108,5 @@
         {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}{{end}}
     {{end}}
 {{else}}
-ur not a mod
 {{deleteMessageReaction nil $.Reaction.MessageID $.User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
 {{end}}{{end}}{{else}}{{end}}
