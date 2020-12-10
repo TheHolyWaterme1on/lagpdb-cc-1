@@ -47,6 +47,15 @@
         {{$secret := adjective}}
         {{$logs250 := execAdmin "log" "250"}}
         {{$reason := joinStr " " (slice .CmdArgs 1)}}
+        {{$history := ""}}
+        {{if (dbGet $user.ID "rhistory")}}
+            {{range (dbGetPattern $user.ID "rhistory%" 7 0)}}
+                {{$history = .Value}}
+            {{end}}
+            {{dbSet $user.ID "rhistory" (print (dbGet $user.ID "rhistory").Value "\n" currentTime.Format "02-01-2006-15:04:05") ": " $reason}}
+        {{else}}
+            {{dbSet $user.ID "rhistory" (print (currentTime.Format "02-01-2006-15:04:05") ": " $reason)}}
+        {{end}}
         {{$reportGuide := (printf "\nDismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️.")}}
         {{$userReportString := (printf  "<@%d> reported <@%d> in <#%d>." .User.ID $user.ID .Channel.ID)}}
         {{dbSet .User.ID "userReport" $userReportString}}
@@ -60,6 +69,7 @@
                 (sdict "name" "Reason for Report" "value" $reason)
                 (sdict "name" "Reported user" "value" (printf "<@%d> (ID %d)" $user.ID $user.ID))
                 (sdict "name" "Message Logs" "value" (printf "[last 250 messages](%s) \nTime - `%s`" $logs250 (currentTime.Format "Mon 02 Jan 15:04:05")))
+                (sdict "name" "History" "value" (print "```\n" (or $history "None recorded") "\n```"))
                 (sdict "name" "Reaction Menu Options" "value" $reportGuide)
             )
             "footer" (sdict "text" "No moderator yet • Claim with any reaction")
