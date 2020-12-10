@@ -52,7 +52,7 @@
             {{range (dbGetPattern $user.ID "rhistory%" 7 0)}}
                 {{$history = .Value}}
             {{end}}
-            {{dbSet $user.ID "rhistory" (print (dbGet $user.ID "rhistory").Value "\n" currentTime.Format "02-01-2006-15:04:05") ": " $reason}}
+            {{dbSet $user.ID "rhistory" (print (dbGet $user.ID "rhistory").Value "\n" (currentTime.Format "02-01-2006-15:04:05") ": " $reason)}}
         {{else}}
             {{dbSet $user.ID "rhistory" (print (currentTime.Format "02-01-2006-15:04:05") ": " $reason)}}
         {{end}}
