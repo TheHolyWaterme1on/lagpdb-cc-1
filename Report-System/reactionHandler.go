@@ -26,7 +26,7 @@
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your report was dismissed. %s" $user.ID $mod)}}
                 {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed.__")}}
-                {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Warn for `False report` with ❗ or finish without warning with 👌.")}}
+                {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Warn for `False report` with ❗ or finish without warning with 👌.")}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "❗" "👌"}}
@@ -35,7 +35,7 @@
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user.ID $mod)}}
                 {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Under investigation.__")}}
-                {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Dismiss with ❌ or resolve with 👍.")}}
+                {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Dismiss with ❌ or resolve with 👍.")}}
                 {{$report.Set "color" 16776960}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "❌" "👍"}}
@@ -45,7 +45,7 @@
                     {{sendMessage $reportDiscussion (printf "<@%d>: More information was requested. Please post it down below. %s" $user.ID $mod)}}
                     {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                     {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__More information requested.__")}}
-                    {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Dismiss with ❌ or start investigation with 🛡️.")}}
+                    {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Dismiss with ❌ or start investigation with 🛡️.")}}
                     {{$report.Set "color" 255}}
                     {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                     {{addReactions "❌" "🛡️"}}
@@ -54,7 +54,7 @@
                     {{sendMessage $reportDiscussion (printf "<@%d>: More information regarding your cancellation was requested. Please post it down below. %s" $user.ID $mod)}}
                     {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                     {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__More information requested.__")}}
-                    {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Dismiss request with 🚫, or accept request __(and nullify report)__ with ✅")}}
+                    {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Dismiss request with 🚫, or accept request __(and nullify report)__ with ✅")}}
                     {{$report.Set "color" 255}}
                     {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                     {{addReactions "🚫" "✅"}}
@@ -63,7 +63,7 @@
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation was dismissed. %s" $user.ID $mod)}}
                 {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Cancellation request denied.__")}}
-                {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" "Dismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️.")}}
+                {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Dismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️.")}}
                 {{$report.Set "color" 16711680}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "❌" "🛡️" "⚠️"}}
@@ -71,7 +71,7 @@
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your request of cancellation was accepted. %s" $user.ID $mod)}}
                 {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Cancellation request accepted, report nullified.__")}}
-                {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
+                {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 5))}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "🏳️"}}
@@ -79,7 +79,7 @@
                 {{sendMessage $reportDiscussion (printf "<@%d>: Your report was resolved. %s" $user.ID $mod)}}
                 {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report resolved.__")}}
-                {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
+                {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 5))}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "🏳️"}}
@@ -87,14 +87,14 @@
                 {{$silent := exec "warn" $user.ID "False Report."}}
                 {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed, warned for false report.__")}}
-                {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
+                {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 5))}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "🏳️"}}
             {{else if eq $.Reaction.Emoji.Name "👌"}}
                 {{deleteAllMessageReactions nil $.Reaction.MessageID}}
                 {{$report.Set "Fields" ((cslice).AppendSlice $report.Fields)}}{{$report.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed, no further action taken.__")}}
-                {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 4))}}
+                {{$report.Set "Fields" ((cslice).AppendSlice (slice $report.Fields 0 5))}}
                 {{$report.Set "color" 65280}}
                 {{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $report)}}
                 {{addReactions "🏳️"}}
