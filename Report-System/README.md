@@ -23,7 +23,8 @@ All neccessary information is arranged in an embed which is edited accordingly.
 * Notifies users about the current state of their report
 * Enables users to request cancellation of their latest report
 * Shows report history of the reported user
-* Utilizes of reactions as menu options
+* Utilizes reactions as menu options
+* Report history of reported user
 * Edits the report message appropiately
 
 
@@ -80,7 +81,10 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 
 
 #### Default Reaction Inferface
-![Default Interface Image](https://media.discordapp.net/attachments/767771719720632350/775133694264213523/unknown.png)
+![Default Interface Image](https://cdn.discordapp.com/attachments/767771719720632350/787880054238740530/unknown.png)
 
 #### Pending Cancellation Request
-![Cancellation Inferface Image](https://media.discordapp.net/attachments/767771719720632350/775140298690134026/unknown.png)
+![Cancellation Inferface Image](https://cdn.discordapp.com/attachments/767771719720632350/787880387141304350/unknown.png)
+
+***Note:*** Upon the first report there will not be any report history. The images are purely examples and do not represent the reality.  
+~~I was too lazy to reset my database, also I wanted to show how the report history is going to look like~~.

@@ -15,11 +15,18 @@
     ```{{.Cmd}} <Message:ID> <Key:Text> <Reason:Text>```
     Not enough arguments passed.
 {{else}}
-    {{$reportLog := (dbGet 2000 "reportLog").Value|toInt64}}
-    {{$reportDiscussion := (dbGet 2000 "reportDiscussion").Value|toInt64}}
+    {{$s := sdict (dbGet 2000 "reportSettings").Value}}
+    {{$rL := (toInt64 $s.reportLog)}}
+    {{$rID := ((index .CmdArgs 0)|toInt64)}}
+    {{$r := index (getMessage $rL $rID).Embeds 0|structToSdict}}
+    {{range $k, $v := $r}}
+        {{if eq (kindOf $v true) "struct"}}
+            {{$r.Set $k (structToSdict $v)}}
+        {{end}}
+    {{end}}
+    {{$user := index (reFindAllSubmatches `\A<@!?(\d{17,19})>` $r.Description) 0 1|toInt|userArg}}
     {{$userKey := (dbGet .User.ID "key").Value|str}}
-    {{$reportMessageID := ((index .CmdArgs 0)|toInt64)}}
-    {{if eq (toInt64 (dbGet $reportMessageID "reportAuthor").Value) (toInt64 .User.ID)}}
+    {{if eq $user.ID .User.ID}}
             {{if eq "used" $userKey}}
                 {{$response := sendMessageRetID nil "Your latest report was already cancelled!"}}
                 {{deleteMessage nil $response}}
@@ -27,31 +34,17 @@
             {{if eq (index .CmdArgs 1|str) $userKey}}
                 {{if ge (len .CmdArgs) 3}}
                     {{$reason := joinStr " " (slice .CmdArgs 2)}}
-                    {{$userReportString := (dbGet 2000 (printf "userReport%d" .User.ID)).Value|str}}
-                    {{$cancelGuide := (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️.")}}
-                    {{dbSet 2000 "cancelGuideBasic" $cancelGuide}}
-                    {{$userCancelString := (printf "Cancellation of this report was requested. \n Reason: `%s`" $reason)}}
-                    {{$combinedString := (print $userReportString " \n " $userCancelString)}}
-                    {{dbSet 2000 (printf "userCancel%d" .User.ID) $userCancelString}}
-                    {{$report := index (getMessage $reportLog $reportMessageID).Embeds 0|structToSdict}}
-                    {{range $k, $v := $report}}
-                        {{if eq (kindOf $v true) "struct"}}
-                            {{$report.Set $k (structToSdict $v)}}
-                        {{end}}
-                    {{end}}
-                    {{$user := userArg (dbGet $reportMessageID "reportAuthor").Value}}
-                    {{with $report}}
-                        {{.Author.Set "Icon_URL" $report.Author.IconURL}} 
-                        {{.Footer.Set "Icon_URL" $report.Footer.IconURL}}
-                        {{.Set "description" $combinedString}}
+                    {{with $r}}
+                        {{.Set "Author" (sdict "name" (printf "%s: (ID %d)" $user.String $user.ID) "icon_url" ($user.AvatarURL "256"))}}
+                        {{.Footer.Set "Icon_URL" .Footer.IconURL}}
+                        {{.Set "description" (print .Description (printf "\nCancellation of this report was requested. \n Reason: `%s`" $reason))}}
                         {{.Set "color" 16711935}}
-                        {{$.Set "Author" (sdict "text" (print $user.String "(ID" $user.ID ")") "icon_url" ($user.AvatarURL "256"))}}
-                        {{.Set "Fields" ((cslice).AppendSlice .Fields)}}{{.Fields.Set 4 (sdict "name" "Reaction Menu Options" "value" $cancelGuide)}}
+                        {{.Set "Fields" ((cslice).AppendSlice .Fields)}}{{.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️."))}}
                     {{end}}
-                    {{editMessage $reportLog $reportMessageID (complexMessageEdit "embed" $report)}}
+                    {{editMessage $rL $rID (complexMessageEdit "embed" $r)}}
                     Cancellation requested, have a nice day!
-                    {{deleteAllMessageReactions $reportLog $reportMessageID}}
-                    {{addMessageReactions $reportLog $reportMessageID "🚫" "✅" "⚠️"}}
+                    {{deleteAllMessageReactions $rL $rID}}
+                    {{addMessageReactions $rL $rID "🚫" "✅" "⚠️"}}
                     {{dbSet .User.ID "key" "used"}}
                 {{end}}
             {{else}}

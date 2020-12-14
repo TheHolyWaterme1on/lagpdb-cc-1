@@ -14,29 +14,28 @@
 
 {{$reportLog := 772251753173221386}} {{/*The channel where your reports are logged into.*/}}
 {{$reportDiscussion := 766370841196888104}} {{/*Your channel where users talk to staff*/}}
-{{$modRoles := cslice 766372666483408947 766372758799122442}} {{/*RoleIDs of the roles which are considered moderator.*/}}
-{{$adminRoles := cslice 766372666483408947}} {{/*RoleIDs of the roles which are considered admins. Can prime the database to setup the system and reset report count.*/}}
+{{$modRoles := cslice 787098248145403957 787098370350514197}} {{/*RoleIDs of the roles which are considered moderator.*/}}
+{{$adminRoles := cslice 787098370350514197}} {{/*RoleIDs of the roles which are considered admins. Can prime the database to setup the system and reset report count.*/}}
 
 {{/*CONFIG AREA END*/}}
 
 
 {{/*ACTUAL CODE*/}}
 {{$isAdmin := false}}{{range .Member.Roles}}{{if in $adminRoles .}}{{$isAdmin = true}}{{end}}{{end}}
-{{if (lt (len .CmdArgs) 2)}}
+{{if and .CmdArgs (lt (len .CmdArgs) 2)}}
     {{if eq (index .CmdArgs 0) "dbSetup"}}
         {{if $isAdmin}}
-                {{dbSet 2000 "reportLog" (toString $reportLog)}}
-                {{dbSet 2000 "reportDiscussion" (toString $reportDiscussion)}}
-                {{dbSet 2000 "modRoles" $modRoles}}
-                {{dbSet 2000 "adminRoles" $adminRoles}}
-                {{dbSet 2000 "ReportNo" 0}}
-                {{sendMessage nil "**Database primed, report count reset, system is ready to use!**"}}
+            {{dbSet 2000 "reportSettings" (sdict "reportLog" (str $reportLog) "reportDiscussion" (str $reportDiscussion) "modRoles" $modRoles)}}
+            {{dbSet 2000 "ReportNo" 0}}
+            {{sendMessage nil "**Database primed, report count reset, system is ready to use!**"}}
         {{else}}
             {{sendMessage nil "You do not have permission to use this command!"}}
         {{end}}
     {{else}}
     {{sendMessage nil (printf "```%s <User:Mention/ID> <Reason:Text>``` \n Not enough arguments passed." .Cmd)}}
     {{end}}
+{{else if not .CmdArgs}}
+    {{sendMessage nil (printf "```%s <User:Mention/ID> <Reason:Text>``` \n Not enough arguments passed." .Cmd)}}
 {{else}}
     {{$user := userArg (index .CmdArgs 0)}}
     {{if eq $user.ID .User.ID}}
@@ -56,21 +55,18 @@
         {{else}}
             {{dbSet $user.ID "rhistory" (print (currentTime.Format "02-01-2006-15:04:05") ": " $reason)}}
         {{end}}
-        {{$reportGuide := (printf "\nDismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️.")}}
-        {{$userReportString := (printf  "<@%d> reported <@%d> in <#%d>." .User.ID $user.ID .Channel.ID)}}
-        {{dbSet .User.ID "userReport" $userReportString}}
         {{$reportNo := dbIncr 2000 "ReportNo" 1}}
         {{$reportEmbed := cembed "title" (print "Report No. " $reportNo)
             "author" (sdict "name" (printf "%s (ID %d)" .User.String .User.ID) "icon_url" (.User.AvatarURL "256"))
             "thumbnail" (sdict "url" ($user.AvatarURL "512"))
-            "description" $userReportString
+            "description" (printf "<@%d> reported <@%d> in <#%d>." .User.ID $user.ID .Channel.ID)
             "fields" (cslice
                 (sdict "name" "Current State" "value" "__Not reviewed yet.__")
                 (sdict "name" "Reason for Report" "value" $reason)
                 (sdict "name" "Reported user" "value" (printf "<@%d> (ID %d)" $user.ID $user.ID))
                 (sdict "name" "Message Logs" "value" (printf "[last 250 messages](%s) \nTime - `%s`" $logs250 (currentTime.Format "Mon 02 Jan 15:04:05")))
                 (sdict "name" "History" "value" (print "```\n" (or $history "None recorded") "\n```"))
-                (sdict "name" "Reaction Menu Options" "value" $reportGuide)
+                (sdict "name" "Reaction Menu Options" "value" (printf "\nDismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️."))
             )
             "footer" (sdict "text" "No moderator yet • Claim with any reaction")
         }}
@@ -78,9 +74,8 @@
         {{addMessageReactions $reportLog $x "❌" "🛡️" "⚠️"}}
         {{$response := sendMessageRetID nil "User reported to the proper authorites!"}}
         {{dbSet .User.ID "key" $secret}}
-        {{dbSet $x "reportAuthor" (toString .User.Mention)}}
         {{deleteTrigger}}
         {{deleteMessage nil $response}}
-        {{sendDM (printf "User reported to the proper authorities! If you wish to cancel your report, simply type `-cancelr %d %s` in any channel.\n **A reason is required.**" $x $secret)}}
+        {{sendDM (printf "User reported to the proper authorities! If you wish to cancel your report, simply type \n```-cancelr %d %s``` in any channel.\n **A reason is required.**" $x $secret)}}
     {{end}}
 {{end}}
