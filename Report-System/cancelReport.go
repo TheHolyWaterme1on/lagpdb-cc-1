@@ -35,7 +35,7 @@
                 {{if ge (len .CmdArgs) 3}}
                     {{$reason := joinStr " " (slice .CmdArgs 2)}}
                     {{with $r}}
-                        {{.Set "Author" (sdict "name" (printf "%s: (ID %d)" $user.String $user.ID) "icon_url" ($user.AvatarURL "256"))}}
+                        {{.Set "Author" (sdict "name" (printf "%s (ID %d)" $user.String $user.ID) "icon_url" ($user.AvatarURL "256"))}}
                         {{.Footer.Set "Icon_URL" .Footer.IconURL}}
                         {{.Set "description" (print .Description (printf "\nCancellation of this report was requested. \n Reason: `%s`" $reason))}}
                         {{.Set "color" 16711935}}
