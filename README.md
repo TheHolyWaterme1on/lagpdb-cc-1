@@ -14,7 +14,7 @@ If something broke (or seems as if), ping me in the [YAGPDB Support Server](http
 * Tell me what you did. If it is a bug, I may be able to reproduce it.
 
 ## Author
-Created and maintained by @Olde7325.
+Created and maintained by Olde7325.
 > Github [Olde7325](https://github.com/Olde7325) - Discord `Oldette#7325`
 
 ## License 
