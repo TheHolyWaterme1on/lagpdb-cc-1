@@ -37,17 +37,13 @@ Make for each custom command file a separate custom command, preferrably in the 
     * I also recommend to create a command override disabling this command aswell
 2. Copy the channel ID of the channel where you want your reports being logged into
     * paste it in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$reportLog`
-4. Copy the channel ID of the channel where you want to notify your members about the current state of their report
+3. Copy the channel ID of the channel where you want to notify your members about the current state of their report
     *  paste it in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$reportDiscussion`
-5. Copy the role IDs of the roles which you consider administrators
-    * paste them one by one in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$adminRoles`
-    * Separate the IDs with spaces
-6. Copy the role IDs of the roles which you consider moderators
-    * Copy the role IDs of the admin roles aswell
-    * Paste them separated by spaces in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$modRoles`
-7. Run the case sensitive command `-ru dbSetup`
+4. Make sure to 
+4. Run the case sensitive command `-ru dbSetup`
     * This command is restricted to admins only!
-8. Done! YAGPDB.xyz will now take care of the rest and confirms setting up with an appropiate response
+5. Done! YAGPDB.xyz will now take care of the rest and confirms setting up with an appropiate response.  
+**Note:** Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server!
 
 ## Usage
 ### Commands

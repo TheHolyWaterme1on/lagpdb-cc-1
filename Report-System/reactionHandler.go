@@ -10,19 +10,21 @@
 {{/*ACTUAL CODE*/}}
 {{/*Initializing variables*/}}
 {{$s := sdict (dbGet 2000 "reportSettings").Value}}
-{{$mR := (cslice).AppendSlice $s.modRoles}}
 {{$rD := $s.reportDiscussion}}
 {{$rL := $s.reportLog}}
 {{/*Validation Steps*/}}
 {{if eq .Channel.ID (toInt $rL)}}
 {{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}
-{{$isMod := false}}{{range .Member.Roles}}{{if in $mR .}}{{$isMod = true}}{{end}}{{end}}
-{{$r := index (getMessage .Reaction.ChannelID .Reaction.MessageID).Embeds 0|structToSdict}}
+{{$isMod := in (split (index (split (exec "viewperms") "\n") 2) ", ") "ManageMessages"}}
+{{if .ReactionMessage.Embeds}}
+{{$e := (index .ReactionMessage.Embeds 0)}}
+{{if and $e.Author $e.Footer}}
+{{$r := index (getMessage $.Reaction.ChannelID $.Reaction.MessageID).Embeds 0|structToSdict}}
 {{range $k, $v := $r}}{{if eq (kindOf $v true) "struct"}}{{$r.Set $k (structToSdict $v)}}{{end}}{{end}}
 {{with $r}}
-{{$embed := (index $.ReactionMessage.Embeds 0)}}
+{{$e = (index $.ReactionMessage.Embeds 0)}}
 {{if $isMod}}
-{{if (reFind (toString $.User.ID) $embed.Footer.Text)}}
+{{if (reFind (toString $.User.ID) $e.Footer.Text)}}
 {{$user := index (reFindAllSubmatches `\A<@!?(\d{17,19})>` .Description) 0 1|toInt|userArg}} {{/*Parsing user from description, saving a db call*/}}
 {{.Set "Footer" (sdict "text" (print "Responsible Moderator: " $.User.String "(ID: " $.User.ID ")") "icon_url" ($.User.AvatarURL "256"))}}
 {{.Set "Author" (sdict "name" (printf "%s: (ID %d)" $user.String $user.ID) "icon_url" ($user.AvatarURL "256"))}}
@@ -109,7 +111,7 @@
 {{end}}
 {{else}}
 {{deleteMessageReaction nil $.Reaction.MessageID $.User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
-{{if and (ne $.Reaction.Emoji.Name "🏳️") (reFind "•" $embed.Footer.Text)}}
+{{if and (ne $.Reaction.Emoji.Name "🏳️") (reFind "•" $e.Footer.Text)}}
 {{$tempMessage := sendMessageRetID nil (printf "<@%d>: No moderator yet, you claimed this report now. Your reactions were reset, please redo. Thanks ;)" $.User.ID)}}
 {{deleteMessage nil $tempMessage 5}}
 {{.Set "Footer" (sdict "text" (print "Responsible Moderator: " $.User.String " (ID: " $.User.ID ")") "icon_url" ($.User.AvatarURL "256"))}}
@@ -117,4 +119,4 @@
 {{end}}
 {{else}}
 {{deleteMessageReaction nil $.Reaction.MessageID $.User.ID "❌" "❗" "👌" "👍" "✅" "🛡️" "⚠️" "🚫"}}
-{{end}}{{end}}{{end}}
+{{end}}{{end}}{{end}}{{else}}{{end}}{{end}}

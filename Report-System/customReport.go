@@ -14,18 +14,20 @@
 
 {{$reportLog := 772251753173221386}} {{/*The channel where your reports are logged into.*/}}
 {{$reportDiscussion := 766370841196888104}} {{/*Your channel where users talk to staff*/}}
-{{$modRoles := cslice 787098248145403957 787098370350514197}} {{/*RoleIDs of the roles which are considered moderator.*/}}
-{{$adminRoles := cslice 787098370350514197}} {{/*RoleIDs of the roles which are considered admins. Can prime the database to setup the system and reset report count.*/}}
 
 {{/*CONFIG AREA END*/}}
 
 
 {{/*ACTUAL CODE*/}}
-{{$isAdmin := false}}{{range .Member.Roles}}{{if in $adminRoles .}}{{$isAdmin = true}}{{end}}{{end}}
+{{$p := index (reFindAllSubmatches `.*?: \x60(.*)\x60\z` (execAdmin "prefix")) 0 1}}
+{{$Escaped_Prefix := reReplace `[\.\[\]\-\?\!\\\*\{\}\(\)\|]` $p `\${0}`}}
+{{if not (reFind (print `\A` $Escaped_Prefix `|<@!?204255221017214977>`) .Message.Content)}}
+{{$response:= sendMessageRetID nil "Did not set regex to match Server Prefix!"}}{{deleteTrigger}}
+{{deleteMessage nil $response}}{{else}}
 {{if and .CmdArgs (lt (len .CmdArgs) 2)}}
     {{if eq (index .CmdArgs 0) "dbSetup"}}
-        {{if $isAdmin}}
-            {{dbSet 2000 "reportSettings" (sdict "reportLog" (str $reportLog) "reportDiscussion" (str $reportDiscussion) "modRoles" $modRoles)}}
+        {{if (in (split (index (split (exec "viewperms") "\n") 2) ", ") "ManageServer")}}
+            {{dbSet 2000 "reportSettings" (sdict "reportLog" (str $reportLog) "reportDiscussion" (str $reportDiscussion))}}
             {{dbSet 2000 "ReportNo" 0}}
             {{sendMessage nil "**Database primed, report count reset, system is ready to use!**"}}
         {{else}}
@@ -78,4 +80,4 @@
         {{deleteMessage nil $response}}
         {{sendDM (printf "User reported to the proper authorities! If you wish to cancel your report, simply type \n```-cancelr %d %s``` in any channel.\n **A reason is required.**" $x $secret)}}
     {{end}}
-{{end}}
+{{end}}{{end}}

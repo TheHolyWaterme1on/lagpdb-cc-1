@@ -11,6 +11,11 @@
 */}}
 
 {{/*ACTUAL CODE*/}}
+{{$p := index (reFindAllSubmatches `.*?: \x60(.*)\x60\z` (execAdmin "prefix")) 0 1}}
+{{$Escaped_Prefix := reReplace `[\.\[\]\-\?\!\\\*\{\}\(\)\|]` $p `\${0}`}}
+{{if not (reFind (print `\A` $Escaped_Prefix `|<@!?204255221017214977>`) .Message.Content)}}
+{{$response:= sendMessageRetID nil "Did not set regex to match Server Prefix!"}}{{deleteTrigger}}
+{{deleteMessage nil $response}}{{else}}
 {{if not (ge (len .CmdArgs) 3)}}
     ```{{.Cmd}} <Message:ID> <Key:Text> <Reason:Text>```
     Not enough arguments passed.
@@ -56,4 +61,4 @@
             {{$response := sendMessageRetID nil "You are not the author of this report!"}}
             {{deleteMessage nil $response}}
     {{end}}
-{{end}}
+{{end}}{{end}}
