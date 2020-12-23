@@ -16,9 +16,10 @@ All neccessary information is arranged in an embed which is edited accordingly.
         * [Colour Coding](#Colour-Coding)
         * [Default Reaction Inferface](#Default-Reaction-Inferface)
         * [Pending Cancellation Request](#Pending-Cancellation-Request)
+* [Acknowledgements](#Acknowledgements)
 </details>
 
-## Features
+# Features
 * Logging channel where report messages are sent into
 * Notifies users about the current state of their report
 * Enables users to request cancellation of their latest report
@@ -28,11 +29,11 @@ All neccessary information is arranged in an embed which is edited accordingly.
 * Edits the report message appropiately
 
 
-## Setting Up
-### Preface
+# Setting Up
+## Preface
 Make for each custom command file a separate custom command, preferrably in the same category to keep them neat and organized. Please make sure to follow each step precisely and to use the correct trigger and trigger type, as well.
 
-#### These are the neccessary steps:
+### These are the neccessary steps:
 1. Disable the native report command, found here: `Control Panel > Tools & Utilities > Moderation`
     * I also recommend to create a command override disabling this command aswell
 2. Copy the channel ID of the channel where you want your reports being logged into
@@ -45,14 +46,14 @@ Make for each custom command file a separate custom command, preferrably in the 
 5. Done! YAGPDB.xyz will now take care of the rest and confirms setting up with an appropiate response.  
 **Note:** Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server!
 
-## Usage
-### Commands
+# Usage
+## Commands
 `-ru <User:Mention/ID> <Reason:Text>` - Sends the report. 
 
 `-cr <MessageID:Text> <Key:Text> <Reason:Text>` - Requests cancellation of the report with that ID in connotation of that key. Only works for the latest report.
 
-### Interface
-#### Reaction Menu
+## Interface
+### Reaction Menu
 * ❌ - Dismisses a report, you will be then prompted with the following;
     * ❗ - Warns the reporting user for a false report
     * 👌 - Closes report without any further action being taken
@@ -65,7 +66,7 @@ Make for each custom command file a separate custom command, preferrably in the 
 ***
 Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction to signalize a closed report.
 
-#### Colour Coding
+### Colour Coding
 Each state has its own colour, for one to make it easier on the eyes and also to make it easier for you and your staff team recognizing in what state each report is.
 
 * ![#808080](https://via.placeholder.com/15/808080/000000?text=+) Pending moderator review
@@ -76,11 +77,14 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 * ![#FF0000](https://via.placeholder.com/15/FF0000/000000?text=+) Cancellation request denied
 
 
-#### Default Reaction Inferface
+### Default Reaction Inferface
 ![Default Interface Image](https://cdn.discordapp.com/attachments/767771719720632350/787880054238740530/unknown.png)
 
-#### Pending Cancellation Request
+### Pending Cancellation Request
 ![Cancellation Inferface Image](https://cdn.discordapp.com/attachments/767771719720632350/787880387141304350/unknown.png)
 
 ***Note:*** Upon the first report there will not be any report history. The images are purely examples and do not represent the reality.  
 ~~I was too lazy to reset my database, also I wanted to show how the report history is going to look like~~.
+
+# Acknowledgements
+Here I would like to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745` for helping me developing and fine-tuning this custom command set. Thank you mate, I owe you something!

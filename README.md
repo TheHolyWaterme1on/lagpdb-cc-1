@@ -3,19 +3,15 @@ My own little collection of all the custom commands (CCs) I wrote for the Discor
 This is not an official repository, however I plan on PRing some CCs to [the official one](https://github.com/yagpdb-cc/yagpdb-cc) soon.
 
 ## About these commands
-When you found your way here, I assume that you already have some basic CC knowledge (how to add them, you maybe even wrote your first basic ones). Yet I still try to make it as clear as possible how to use them. If you have any improvements to suggest, or need help, feel free to open either an issue or a PR 😉.
+When you found your way here, I assume that you already have some basic CC knowledge (how to add them, you maybe even wrote your first basic ones). Yet I still try to make it as clear as possible how to use them. If you have any improvements to suggest, or need help, feel free to either open an issue, a PR, or [join my server](https://discord.gg/tFhxypKcvm) 😉.
 
-## Something broke! HELP!!!
-If something broke (or seems as if), ping me in the [YAGPDB Support Server](https://discord.com/invite/0vYlUK2XBKldPSMY), or just join and DM me. 
-### BUT:
-* Tell me where you are coming from. Usually I instantly block unsolicited DMs.
-* Give me screenshots. Without screenshots, I do not know what broke.
-    * You deleted the error message? Well, sucks. Try to retrieve it somewhere.
-* Tell me what you did. If it is a bug, I may be able to reproduce it.
+## Something broke?
+If something broke (or seems as if), [join my server](https://discord.gg/tFhxypKcvm) and ping me, I will be there as soon as possible.
+You must read and agree to the rules in order to be able to type.  
+Provide screenshots of the input and the error message, that way I can pinpoint it down faster!
+Did you delete the error message? Log the channel and try to retrieve it back, or look at the settings of the erroring custom command, you'll find the latest error there.
 
-## Author
-Created and maintained by Olde7325.
-> Github [Olde7325](https://github.com/Olde7325) - Discord `Oldette#7325`
+## Author and License
+Created and maintained by [Olde7325](https://github.com/Olde7325).
 
-## License 
 This repository is licensed under the MIT License.

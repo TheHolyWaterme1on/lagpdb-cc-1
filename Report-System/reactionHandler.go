@@ -5,8 +5,11 @@
     Make this in a seperate Reaction CC, due to its massive character count.
     Remove this leading comment once you added this command.
     Obligatory Trigger type and trigger: Reaction; added reactions only.
-    Created by: Olde#7325
+
+    Created by: https://github.com/Olde7325
+    Join https://discord.gg/tFhxypKcvm if something broke or you need support.
 */}}
+
 {{/*ACTUAL CODE*/}}
 {{/*Initializing variables*/}}
 {{$s := sdict (dbGet 2000 "reportSettings").Value}}

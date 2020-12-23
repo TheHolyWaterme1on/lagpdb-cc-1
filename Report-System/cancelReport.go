@@ -7,7 +7,8 @@
     
     Recommended Trigger type and trigger: Regex trigger with trigger `\A-c(ancel)?r(eport)?(\s+|\z)`
 
-    Created by: Olde#7325
+    Created by: https://github.com/Olde7325
+    Join https://discord.gg/tFhxypKcvm if something broke or you need support.
 */}}
 
 {{/*ACTUAL CODE*/}}
