@@ -5,7 +5,7 @@
 
     Usage: `-ru <User:Mention/ID> <Reason:Text>`
 
-    Recommended Trigger type and trigger: Regex trigger with trigger `\A-r(eport)?u(ser)?(\s+|\z)`
+    Recommended Trigger type and trigger: Regex trigger with trigger `\A-r(eport)?(?:u(ser)?)?(\s+|\z)`
 
     Created by: https://github.com/Olde7325
     Join https://discord.gg/tFhxypKcvm if something broke or you need support.
