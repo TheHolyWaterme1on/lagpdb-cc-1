@@ -3,6 +3,8 @@ These commands are **not** standalone. Add all the commands if you wish to use t
 These CCs allow you to create a report system with the ability for users to request cancellation/nullification of their reports and add some functionalities for staff utilizing reactions.
 All neccessary information is arranged in an embed which is edited accordingly.
 
+Should you need further information because something is unclear, or want to report a bug, feel free to join [my server](https://discord.gg/tFhxypKcvm).
+
 # Table of Contents
 <details>
 <summary>Table of Contents</summary>
@@ -87,4 +89,4 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 ~~I was too lazy to reset my database, also I wanted to show how the report history is going to look like~~.
 
 # Acknowledgements
-Here I would like to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745` for helping me developing and fine-tuning this custom command set. Thank you mate, I owe you something!
+Here I would like to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745` for helping me developing and fine-tuning this custom command set. Thank you mate, I owe you a lot!
