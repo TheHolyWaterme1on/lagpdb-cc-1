@@ -9,15 +9,43 @@
     Created by: https://github.com/Olde7325
     Join https://discord.gg/tFhxypKcvm if something broke or you need support.
 */}}
-
 {{/*ACTUAL CODE*/}}
+{{/* Abstraction */}}
+{{define "response"}}
+{{$uR :=  .user|userArg}}
+{{$mR := .moderator|userArg}}
+{{$r := .rembed}}
+{{if ne .info "none"}}
+{{$message := complexMessage "content" (print $uR.Mention ":") "embed" 
+(cembed "title" "Information"
+    "description" "News regarding your report!"
+    "fields" (cslice 
+        (sdict "name" "Responsible Moderator:" "value" (printf  "<@%d> \n ID: `%d`" $mR.ID $mR.ID) "inline" true)
+        (sdict "name" "Status:" "value" .info "inline" true)
+        (sdict "name" "Reported User:" "value" (index $r.Fields 2).Value "inline" true)
+        (sdict "name" "Reason for Report:" "value" (index $r.Fields 1).Value "inline" true)
+    )
+    "footer" (sdict "text" (print $mR.String " • " (currentTime.Format "Mon 02 Jan 15:04:05")) "icon_url" ($mR.AvatarURL "256"))
+)}}
+{{sendMessage .rD $message}}
+{{end}}
+{{if ne .state "none"}}
+{{$r.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" (toString .state))}}
+{{else}}
+{{$r.Set "Fields" ((cslice).AppendSlice (slice $r.Fields 0 5))}}
+{{$r.Set "Footer" (sdict "text" (print "Report closed! • Responsible Moderator: " $.User.String "(ID: " $.User.ID ")") "icon_url" ($.User.AvatarURL "256"))}}
+{{end}}
+{{$r.Set "color" (toInt .color)}}
+{{deleteAllMessageReactions .rL .reportID}}
+{{editMessage .rL .reportID (complexMessageEdit "embed" $r)}}
+{{end}}
 {{/*Initializing variables*/}}
 {{$s := sdict (dbGet 2000 "reportSettings").Value}}
 {{$rD := $s.reportDiscussion}}
 {{$rL := $s.reportLog}}
 {{/*Validation Steps*/}}
 {{if eq .Channel.ID (toInt $rL)}}
-{{$mod := (printf "\nResponsible moderator: <@%d>" .Reaction.UserID)}}
+{{$mod := userArg .Reaction.UserID}}
 {{$isMod := in (split (index (split (exec "viewperms") "\n") 2) ", ") "ManageMessages"}}
 {{if .ReactionMessage.Embeds}}
 {{$e := (index .ReactionMessage.Embeds 0)}}
@@ -32,84 +60,49 @@
 {{.Set "Footer" (sdict "text" (print "Responsible Moderator: " $.User.String "(ID: " $.User.ID ")") "icon_url" ($.User.AvatarURL "256"))}}
 {{.Set "Author" (sdict "name" (printf "%s: (ID %d)" $user.String $user.ID) "icon_url" ($user.AvatarURL "256"))}}
 {{if eq $.Reaction.Emoji.Name "❌"}}{{/*Dismissal*/}}
-{{sendMessage (toInt64 $rD) (printf "<@%d>: Your report was dismissed. %s" $user.ID $mod)}}
-{{deleteAllMessageReactions nil $.Reaction.MessageID}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed.__")}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Warn for `False report` with ❗ or finish without warning with 👌.")}}
-{{.Set "color" 65280}}
-{{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $r)}}
-{{addReactions "❗" "👌"}}
+{{$data := sdict "color" 65280 "info" "Your report was dismissed."  "state" "__Report dismissed.__" "menu" "Warn for `False report` with ❗ or finish without warning with 👌." "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{template "response" $data}}
 {{dbSet $user.ID "key" "used"}}
+{{addReactions "❗" "👌"}}
 {{else if eq $.Reaction.Emoji.Name "🛡️"}}{{/*Taking care*/}}
-{{sendMessage (toInt64 $rD) (printf "<@%d>: Your report is being taken care of; Should you have any further information, please post it down below. %s" $user.ID $mod)}}
-{{deleteAllMessageReactions nil $.Reaction.MessageID}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" "__Under investigation.__")}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Dismiss with ❌ or resolve with 👍.")}}
-{{.Set "color" 16776960}}
-{{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $r)}}
+{{$data := sdict "color" 16776960 "info" "Your report is taken care of; Should you have any further information, please post it down below."  "state" "__Under investigation.__" "menu" "Dismiss with ❌ or resolve with 👍." "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{template "response" $data}}
 {{addReactions "❌" "👍"}}
 {{dbSet $user.ID "key" "used"}}
 {{else if eq $.Reaction.Emoji.Name "⚠️"}}{{/*Request info*/}}
 {{if ne (dbGet $user.ID "key").Value "used"}}{{/*Without cancellation request*/}}
-{{sendMessage (toInt64 $rD) (printf "<@%d>: More information was requested. Please post it down below. %s" $user.ID $mod)}}
-{{deleteAllMessageReactions nil $.Reaction.MessageID}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" "__More information requested.__")}}
 {{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Dismiss with ❌ or start investigation with 🛡️.")}}
-{{.Set "color" 255}}
-{{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $r)}}
+{{$data := sdict "color" 255 "info" "More information was requested. Please post it down below."  "state" "__More information requested.__" "menu" "Dismiss with ❌ or start investigation with 🛡️." "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{template "response" $data}}
 {{addReactions "❌" "🛡️"}}
 {{else}} 
 {{/*With Cancellation request*/}}
 {{sendMessage (toInt64 $rD) (printf "<@%d>: More information regarding your cancellation was requested. Please post it down below. %s" $user.ID $mod)}}
-{{deleteAllMessageReactions nil $.Reaction.MessageID}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" "__More information requested.__")}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Dismiss request with 🚫, or accept request __(and nullify report)__ with ✅")}}
-{{.Set "color" 255}}
-{{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $r)}}
+{{$data := sdict "color" 255 "info" "More information regarding your cancellation was requested. Please post it down below."  "state" "__More information requested.__" "menu" "Dismiss request with 🚫, or accept request __(and nullify report)__ with ✅" "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{template "response" $data}}
 {{addReactions "🚫" "✅"}}
 {{end}}
 {{else if eq $.Reaction.Emoji.Name "🚫"}}{{/*Dismissal of cancellation*/}}
-{{sendMessage (toInt64 $rD) (printf "<@%d>: Your cancellation request was denied. %s" $user.ID $mod)}}
-{{deleteAllMessageReactions nil $.Reaction.MessageID}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" "__Cancellation request denied.__")}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Dismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️.")}}
-{{.Set "color" 16711680}}
-{{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $r)}}
+{{$data := sdict "color" 16711680 "info" "Your cancellation request was denied."  "state" "__Cancellation request denied.__" "menu" "Dismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️." "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{template "response" $data}}
 {{addReactions "❌" "🛡️" "⚠️"}}
 {{else if eq $.Reaction.Emoji.Name "✅"}}{{/*Cancellation approved*/}}
 {{sendMessage (toInt64 $rD) (printf "<@%d>: Your cancellation request was accepted. %s" $user.ID $mod)}}
-{{deleteAllMessageReactions nil $.Reaction.MessageID}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" "__Cancellation request accepted, report nullified.__")}}
-{{.Set "Fields" ((cslice).AppendSlice (slice $r.Fields 0 5))}}
-{{.Set "Footer" (sdict "text" (print "Report closed! • Responsible Moderator: " $.User.String "(ID: " $.User.ID ")") "icon_url" ($.User.AvatarURL "256"))}}
-{{.Set "color" 65280}}
-{{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $r)}}
+{{$data := sdict "color" 65280 "info" "Your cancellation request was accepted."  "state" "__Cancellation request accepted, report nullified.__" "menu" "none" "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{template "response" $data}}
 {{addReactions "🏳️"}}
 {{else if eq $.Reaction.Emoji.Name "👍"}}{{/*Report resolved*/}}
-{{sendMessage (toInt64 $rD) (printf "<@%d>: Your report was resolved. %s" $user.ID $mod)}}
-{{deleteAllMessageReactions nil $.Reaction.MessageID}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" "__Report resolved.__")}}
-{{.Set "Fields" ((cslice).AppendSlice (slice $r.Fields 0 5))}}
-{{.Set "Footer" (sdict "text" (print "Report closed! • Responsible Moderator: " $.User.String "(ID: " $.User.ID ")") "icon_url" ($.User.AvatarURL "256"))}}
-{{.Set "color" 65280}}
-{{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $r)}}
+{{$data := sdict "color" 65280 "info" "Your report was resolved."  "state" "__Report resolved.__" "menu" "none" "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{template "response" $data}}
 {{addReactions "🏳️"}}
 {{else if eq $.Reaction.Emoji.Name "❗"}}
 {{$silent := exec "warn" $user.ID "False Report."}}
-{{deleteAllMessageReactions nil $.Reaction.MessageID}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed, warned for false report.__")}}
-{{.Set "Fields" ((cslice).AppendSlice (slice $r.Fields 0 5))}}
-{{.Set "Footer" (sdict "text" (print "Report closed! • Responsible Moderator: " $.User.String "(ID: " $.User.ID ")") "icon_url" ($.User.AvatarURL "256"))}}
-{{.Set "color" 65280}}
-{{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $r)}}
+{{$data := sdict "color" 65280 "info" "none"  "state" "__Report dismissed, warned for false report.__" "menu" "none" "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{template "response" $data}}
 {{addReactions "🏳️"}}
 {{else if eq $.Reaction.Emoji.Name "👌"}}
-{{deleteAllMessageReactions nil $.Reaction.MessageID}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 0 (sdict "name" "Current State" "value" "__Report dismissed, no further action taken.__")}}
-{{.Set "Fields" ((cslice).AppendSlice (slice $r.Fields 0 5))}}
-{{.Set "Footer" (sdict "text" (print "Report closed! • Responsible Moderator: " $.User.String "(ID: " $.User.ID ")") "icon_url" ($.User.AvatarURL "256"))}}
-{{.Set "color" 65280}}
-{{editMessage nil $.Reaction.MessageID (complexMessageEdit "embed" $r)}}
+{{$data := sdict "color" 65280 "info" "none"  "state" "__Report dismissed, no further action taken.__" "menu" "none" "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{template "response" $data}}
 {{addReactions "🏳️"}}
 {{end}}
 {{else}}
