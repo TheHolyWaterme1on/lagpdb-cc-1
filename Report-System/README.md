@@ -18,6 +18,7 @@ Should you need further information because something is unclear, or want to rep
         * [Colour Coding](#Colour-Coding)
         * [Default Reaction Inferface](#Default-Reaction-Inferface)
         * [Pending Cancellation Request](#Pending-Cancellation-Request)
+        * [Notification Message](#Notification-Message)
 * [Acknowledgements](#Acknowledgements)
 </details>
 
