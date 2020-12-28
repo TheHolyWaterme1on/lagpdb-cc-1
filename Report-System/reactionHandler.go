@@ -22,11 +22,12 @@
     "fields" (cslice 
         (sdict "name" "Responsible Moderator:" "value" (printf  "<@%d> \n ID: `%d`" $mR.ID $mR.ID) "inline" true)
         (sdict "name" "Status:" "value" .info "inline" true)
+        (sdict "name" "\u200B" "value" "\u200B" "inline" true)
         (sdict "name" "Reported User:" "value" (index $r.Fields 2).Value "inline" true)
         (sdict "name" "Reason for Report:" "value" (index $r.Fields 1).Value "inline" true)
     )
     "footer" (sdict "text" (print $mR.String " • " (currentTime.Format "Mon 02 Jan 15:04:05")) "icon_url" ($mR.AvatarURL "256"))
-)}}
+)}} {{/* The embed is a hacky workaround, because Discord doesn't support "line breaks" in embeds. */}}
 {{sendMessage .rD $message}}
 {{end}}
 {{if ne .state "none"}}
@@ -71,13 +72,11 @@
 {{dbSet $user.ID "key" "used"}}
 {{else if eq $.Reaction.Emoji.Name "⚠️"}}{{/*Request info*/}}
 {{if ne (dbGet $user.ID "key").Value "used"}}{{/*Without cancellation request*/}}
-{{.Set "Fields" ((cslice).AppendSlice $r.Fields)}}{{$r.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" "Dismiss with ❌ or start investigation with 🛡️.")}}
 {{$data := sdict "color" 255 "info" "More information was requested. Please post it down below."  "state" "__More information requested.__" "menu" "Dismiss with ❌ or start investigation with 🛡️." "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
 {{template "response" $data}}
 {{addReactions "❌" "🛡️"}}
 {{else}} 
 {{/*With Cancellation request*/}}
-{{sendMessage (toInt64 $rD) (printf "<@%d>: More information regarding your cancellation was requested. Please post it down below. %s" $user.ID $mod)}}
 {{$data := sdict "color" 255 "info" "More information regarding your cancellation was requested. Please post it down below."  "state" "__More information requested.__" "menu" "Dismiss request with 🚫, or accept request __(and nullify report)__ with ✅" "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
 {{template "response" $data}}
 {{addReactions "🚫" "✅"}}

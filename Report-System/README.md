@@ -90,7 +90,7 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 ~~I was too lazy to reset my database, also I wanted to show how the report history is going to look like~~.
 
 ### Notification Message
-![Notification Example](https://cdn.discordapp.com/attachments/767771719720632350/792838409168224333/unknown.png)
+![Notification Example](https://cdn.discordapp.com/attachments/767771719720632350/793107470993588254/unknown.png)
 
 # Acknowledgements
 Here I would like to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745` for helping me developing and fine-tuning this custom command set. Thank you mate, I owe you a lot!
