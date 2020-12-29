@@ -42,9 +42,9 @@ Make for each custom command file a separate custom command, preferrably in the 
 4. Run the **case sensitive** command `-ru dbSetup`
 5. Done! YAGPDB.xyz will now take care of the rest and confirms setting up with an appropiate response.  
 
----
-Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server!
-It is also recommened to create a command override disabling the `report` command completely.
+| ℹ Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server!  
+It is also recommened to create a command override disabling the `report` command completely. |
+| --- |
 
 # Usage
 ## Commands
@@ -61,8 +61,8 @@ The bottom-most field in the embed will give you a short explanation on what the
 Please take some time to read the intention behind a few options:
 
 **Dismissing a report:** Some call it "ignoring". Both is fine. Basically it tells the reporting user that their report has no ground to stand upon on.
-**Requesting information:** You can see it as a step before ignoring, in case the reported user is a known case, but the report reason is not a very substantive one.
-**Starting investigation:** This one should be obvious. Looking into it, reading the logs, discussing with other staff, talking with the reported user, finding a solution.
+**Requesting information:** You can see it as a step before ignoring, in case the reported user is a known case, but the report reason is not a very substantive one.  
+**Starting investigation:** This one should be obvious. Looking into it, reading the logs, discussing with other staff, talking with the reported user, finding a solution.  
 **Resolving a report:** Used when the reported user was punished accordingly or the report turns out to be for a bagatelle.
 
 Of course, there are more options than just these four, however the missing ones are a fair bit clearer than these.
