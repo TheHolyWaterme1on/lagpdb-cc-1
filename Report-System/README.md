@@ -36,14 +36,13 @@ Should you need further information because something is unclear, or want to rep
 
 Make for each custom command file a separate custom command, preferrably in the same category to keep them neat and organized. Please make sure to follow each step precisely and to use the correct trigger and trigger type, as well.
 
-#### Here's what you gotta do:
+#### Here's what you have to do:
 1. Disable the native report command, found here: `Control Panel > Tools & Utilities > Moderation`
 2. Configure the variables in [the main command](customReport.go.tmpl) as described there.
 4. Run the **case sensitive** command `-ru dbSetup`
 5. Done! YAGPDB.xyz will now take care of the rest and confirms setting up with an appropiate response.  
 
-| ℹ Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server!  
-It is also recommened to create a command override disabling the `report` command completely. |
+| ℹ Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server! <br/> It is also recommened to create a command override disabling the `report` command completely. |
 | --- |
 
 # Usage
@@ -73,12 +72,12 @@ Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction 
 ### Colour Coding
 Each state has its own colour, for one to make it easier on the eyes and also to make it easier for you and your staff team recognizing in what state each report is.
 
-* ![#808080](https://via.placeholder.com/15/808080/000000?text=+) Pending moderator review
-* ![#FF00FF](https://via.placeholder.com/15/FF00FF/000000?text=+) Pending cancellation request 
-* ![#FFFF00](https://via.placeholder.com/15/FFFF00/000000?text=+) Under investigation 
-* ![#0000FF](https://via.placeholder.com/15/0000FF/000000?text=+) Information requested
-* ![#00FF00](https://via.placeholder.com/15/00FF00/000000?text=+) Report resolved 
-* ![#FF0000](https://via.placeholder.com/15/FF0000/000000?text=+) Cancellation request denied
+* ![#808080](https://cdn.discordapp.com/attachments/767771719720632350/793546124903317554/000000.png) Pending moderator review
+* ![#FF00FF](https://cdn.discordapp.com/attachments/767771719720632350/793546157316898857/000000.png) Pending cancellation request 
+* ![#FFFF00](https://cdn.discordapp.com/attachments/767771719720632350/793546178070446140/000000.png) Under investigation 
+* ![#0000FF](https://cdn.discordapp.com/attachments/767771719720632350/793546199532699678/000000.png) Information requested
+* ![#00FF00](https://cdn.discordapp.com/attachments/767771719720632350/793546218068115486/000000.png) Report resolved 
+* ![#FF0000](https://cdn.discordapp.com/attachments/767771719720632350/793546237483024394/000000.png) Cancellation request denied
 
 
 ### Default Reaction Inferface
@@ -87,7 +86,7 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 ### Pending Cancellation Request
 ![Cancellation Inferface Image](https://cdn.discordapp.com/attachments/767771719720632350/787880387141304350/unknown.png)
 
-***Note:*** Upon the first report there will not be any report history. The images are purely meant as examples and do not necessarily represent the reality.
+***Note:*** Upon the first report(s) there will not be any report history. The images are purely meant as examples and do not necessarily represent the reality.
 
 ### Notification Message
 ![Notification Example](https://cdn.discordapp.com/attachments/767771719720632350/793107470993588254/unknown.png)
