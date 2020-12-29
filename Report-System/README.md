@@ -3,7 +3,7 @@ These commands are **not** standalone. Add all the commands if you wish to use t
 These CCs allow you to create a report system with the ability for users to request cancellation/nullification of their reports and add some functionalities for staff utilizing reactions.
 All neccessary information is arranged in an embed which is edited accordingly.
 
-Should you need further information because something is unclear, or want to report a bug, feel free to join [my server](https://discord.gg/tFhxypKcvm).
+Should you need further information because something is unclear, or want to report a bug, feel free to open an issue or follow the invite on my profile.
 
 # Table of Contents
 <details>
@@ -20,6 +20,7 @@ Should you need further information because something is unclear, or want to rep
         * [Pending Cancellation Request](#Pending-Cancellation-Request)
         * [Notification Message](#Notification-Message)
 * [Acknowledgements](#Acknowledgements)
+* [Author](#Author)
 </details>
 
 # Features
@@ -38,16 +39,13 @@ Make for each custom command file a separate custom command, preferrably in the 
 
 ### These are the neccessary steps:
 1. Disable the native report command, found here: `Control Panel > Tools & Utilities > Moderation`
-    * I also recommend to create a command override disabling this command aswell
-2. Copy the channel ID of the channel where you want your reports being logged into
-    * paste it in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$reportLog`
-3. Copy the channel ID of the channel where you want to notify your members about the current state of their report
-    *  paste it in the configuration area of [customReport.go](https://github.com/Olde7325/lagpdb-cc/blob/main/Report-System/customReport.go) to `$reportDiscussion`
-4. Make sure to 
-4. Run the case sensitive command `-ru dbSetup`
-    * This command is restricted to admins only!
+2. Configure the variables in [the main command](customReport.go.tmpl) as described there.
+4. Run the **case sensitive** command `-ru dbSetup`
 5. Done! YAGPDB.xyz will now take care of the rest and confirms setting up with an appropiate response.  
 **Note:** Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server!
+
+| ⚠ You need `Manage_Server` permission in order to run the setup command! |
+| --- |
 
 # Usage
 ## Commands
@@ -56,6 +54,9 @@ Make for each custom command file a separate custom command, preferrably in the 
 `-cr <MessageID:Text> <Key:Text> <Reason:Text>` - Requests cancellation of the report with that ID in connotation of that key. Only works for the latest report.
 
 ## Interface
+| ℹ Only members with `Manage_Messages` permission will be able to use the reaction menu. |
+| --- |
+
 ### Reaction Menu
 * ❌ - Dismisses a report, you will be then prompted with the following;
     * ❗ - Warns the reporting user for a false report
@@ -93,4 +94,8 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 ![Notification Example](https://cdn.discordapp.com/attachments/767771719720632350/793107470993588254/unknown.png)
 
 # Acknowledgements
-Here I would like to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745` for helping me developing and fine-tuning this custom command set. Thank you mate, I owe you a lot!
+I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745` for helping me developing and fine-tuning this custom command set, pulling me back up when I failed and pointing out vulnerabilities.
+
+# Author
+This Custom-Command package was created by [Olde7325](https://github.com/Olde7325).
+The author does not take any responsibilty for bugs and other issues caused by altered code beyond the intended configuaration as described [further up](#Setting-Up).
