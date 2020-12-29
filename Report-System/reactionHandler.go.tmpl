@@ -83,7 +83,7 @@
 {{addReactions "🚫" "✅"}}
 {{end}}
 {{else if eq $.Reaction.Emoji.Name "🚫"}}{{/*Dismissal of cancellation*/}}
-{{$data := sdict "color" 16711680 "info" "Your cancellation request was denied."  "state" "__Cancellation request denied.__" "menu" "Dismiss report with ❌, put under investigation with 🛡️, or request more background information with ⚠️." "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
+{{$data := sdict "color" 16711680 "info" "Your cancellation request was denied."  "state" "__Cancellation request denied.__" "menu" "Dismiss report with ❌, start investigation with 🛡️, or request more background information with ⚠️." "user" $user.ID "moderator" $mod "rembed" $r "rL" $rL "reportID" $.Reaction.MessageID "rD" $rD}}
 {{template "response" $data}}
 {{addReactions "❌" "🛡️" "⚠️"}}
 {{else if eq $.Reaction.Emoji.Name "✅"}}{{/*Cancellation approved*/}}
