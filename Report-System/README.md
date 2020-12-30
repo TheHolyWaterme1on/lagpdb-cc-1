@@ -92,7 +92,7 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 ![Notification Example](https://cdn.discordapp.com/attachments/767771719720632350/793107470993588254/unknown.png)
 
 # Acknowledgements
-I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745`, for helping me developing and fine-tuning this custom command set, pulling me back up when I failed and was on the verge of giving up, as well as pointing out vulnerabilities.
+I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745`, for helping me developing and fine-tuning this custom command set.
 
 # Author
 This Custom-Command package was created by [Olde7325](https://github.com/Olde7325).
