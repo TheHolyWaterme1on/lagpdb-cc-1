@@ -18,7 +18,6 @@
 {{/*CONFIG AREA END*/}}
 
 
-
 {{/*ACTUAL CODE*/}}
 {{$p := index (reFindAllSubmatches `.*?: \x60(.*)\x60\z` (execAdmin "prefix")) 0 1}}
 {{$Escaped_Prefix := reReplace `[\.\[\]\-\?\!\\\*\{\}\(\)\|]` $p `\${0}`}}
