@@ -96,10 +96,11 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745`, for helping me developing and fine-tuning this custom command set.
 
 # Future Features
-| ℹ These features are planned and still under development. You can find a propably unstable version on my server. |
+| ℹ These features are planned and still under development. You can find a probably unstable version on my server. To request a new feature, simply follow the link on my profile to my Discord Server and request it there. |
 | --- |
 
 - [ ] Custom message in notification
+- [ ] Moderation menu to execute on the reported person for super-duper quick access.
 
 # Author
 This Custom-Command package was created by [Olde7325](https://github.com/Olde7325).
