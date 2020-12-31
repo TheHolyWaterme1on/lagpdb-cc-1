@@ -20,6 +20,7 @@ Should you need further information because something is unclear, or want to rep
         * [Pending Cancellation Request](#Pending-Cancellation-Request)
         * [Notification Message](#Notification-Message)
 * [Acknowledgements](#Acknowledgements)
+* [Future Features](#Future-Features)
 * [Author](#Author)
 </details>
 
@@ -66,8 +67,8 @@ Please take some time to read the intention behind a few options:
 
 Of course, there are more options than just these four, however the missing ones are a fair bit clearer than these.
 
-***
-Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction to signalize a closed report.
+| ✅ Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction to signalize a closed report. |
+| --- |
 
 ### Colour Coding
 Each state has its own colour, for one to make it easier on the eyes and also to make it easier for you and your staff team recognizing in what state each report is.
@@ -93,6 +94,12 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 
 # Acknowledgements
 I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745`, for helping me developing and fine-tuning this custom command set.
+
+# Future Features
+| ℹ These features are planned and still under development. You can find a propably unstable version on my server. |
+| --- |
+
+* []Custom message in notification
 
 # Author
 This Custom-Command package was created by [Olde7325](https://github.com/Olde7325).
