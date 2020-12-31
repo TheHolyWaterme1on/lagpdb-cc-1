@@ -96,7 +96,7 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745`, for helping me developing and fine-tuning this custom command set.
 
 # Future Features
-| ℹ These features are planned and still under development, to request new features, please follow the link on my profile. |
+| ℹ These features are planned and still under development. To request new features, please follow the link on my profile. |
 | --- |
 
 - [ ] Custom message in notification.
