@@ -99,7 +99,7 @@ I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord
 | ℹ These features are planned and still under development. You can find a propably unstable version on my server. |
 | --- |
 
-* []Custom message in notification
+- [ ] Custom message in notification
 
 # Author
 This Custom-Command package was created by [Olde7325](https://github.com/Olde7325).
