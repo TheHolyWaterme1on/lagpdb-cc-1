@@ -43,7 +43,7 @@ Make for each custom command file a separate custom command, preferrably in the 
 4. Run the **case sensitive** command `-ru dbSetup`
 5. Done! YAGPDB.xyz will now take care of the rest and confirms setting up with an appropiate response.  
 
-| ℹ Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server! <br/> It is also recommened to create a command override disabling the `report` command completely. |
+| ℹ Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server!<br/>It is also recommened to create a command override disabling the `report` command completely. |
 | --- |
 
 # Usage
@@ -96,11 +96,11 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745`, for helping me developing and fine-tuning this custom command set.
 
 # Future Features
-| ℹ These features are planned and still under development. You can find a probably unstable version on my server. To request a new feature, simply follow the link on my profile to my Discord Server and request it there. |
+| ℹ These features are planned and still under development.<br/>You can find a probably unstable version on my server.<br/>To request a new feature, simply follow the link on my profile to my Discord Server and request it there. |
 | --- |
 
-- [ ] Custom message in notification
-- [ ] Moderation menu to execute on the reported person for super-duper quick access.
+- [ ] Custom message in notification.
+- [ ] Moderation menu to execute on the reported user for super-duper quick access.
 
 # Author
 This Custom-Command package was created by [Olde7325](https://github.com/Olde7325).
