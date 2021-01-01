@@ -20,7 +20,7 @@ Should you need further information because something is unclear, or want to rep
         * [Pending Cancellation Request](#Pending-Cancellation-Request)
         * [Notification Message](#Notification-Message)
 * [Acknowledgements](#Acknowledgements)
-* [Future Features](#Future-Features)
+* [Planned Features](#Planned-Features)
 * [Author](#Author)
 </details>
 
@@ -95,7 +95,7 @@ Each state has its own colour, for one to make it easier on the eyes and also to
 # Acknowledgements
 I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745`, for helping me developing and fine-tuning this custom command set.
 
-# Future Features
+# Planned Features
 | ℹ These features are planned and still under development. To request new features, please follow the link on my profile. |
 | --- |
 
