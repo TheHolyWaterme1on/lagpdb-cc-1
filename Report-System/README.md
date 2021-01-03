@@ -48,7 +48,7 @@ Make for each custom command file a separate custom command, preferrably in the 
 | --- |
 
 For [the main command](customReport.go.tmpl) it is a RegEx trigger type with the trigger `\A-r(eport)?(?:u(ser)?)?(\s+|\z)`.  
-[The ](cancelReport.go.tmpl) requires a RegEx trigger as well, with the trigger being `\A-c(ancel)?r(eport)?(\s+|\z)`.
+[The second command](cancelReport.go.tmpl) requires a RegEx trigger as well, with the trigger being `\A-c(ancel)?r(eport)?(\s+|\z)`.
 The [reaction handler](reactionHandler.go.tmpl) needs a Reaction trigger with "Added reactions only" selected.
 
 | ℹ Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server!<br/>It is also recommened to create a [command override](https://cdn.discordapp.com/attachments/767771719720632350/795328377158369330/unknown.png) disabling the `report` command completely. |
