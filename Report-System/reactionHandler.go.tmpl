@@ -52,7 +52,7 @@
 {{if .ReactionMessage.Embeds}}
 {{$e := (index .ReactionMessage.Embeds 0)}}
 {{if and $e.Author $e.Footer}}
-{{$r := index (getMessage $.Reaction.ChannelID $.Reaction.MessageID).Embeds 0|structToSdict}}
+{{$r := and .Message.Embeds (index .Message.Embeds 0|structToSdict)}}
 {{range $k, $v := $r}}{{if eq (kindOf $v true) "struct"}}{{$r.Set $k (structToSdict $v)}}{{end}}{{end}}
 {{with $r}}
 {{$e = (index $.ReactionMessage.Embeds 0)}}
