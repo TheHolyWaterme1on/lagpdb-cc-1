@@ -14,4 +14,4 @@ Did you delete the error message? Log the channel and try to retrieve it back, o
 ## Author and License
 Created and maintained by [Olde7325](https://github.com/Olde7325).
 
-This repository is licensed under the MIT License.
+This repository is under exclusive copyright.
