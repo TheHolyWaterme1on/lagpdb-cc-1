@@ -1,0 +1,45 @@
+{{/*
+    This handy-dandy custom command-bundle allows a user to cancel their most recent report and utilizes
+    Reactions to make things easier for staff. This specific custom command takes care of custom messages.
+
+    Recommended Trigger type and trigger: Regex trigger with trigger `\A` or `.*`
+
+    Restrict this CC to only run in your report-log channel; Although you can surely put it one of your
+    already existing `.*` triggers, at the very bottom. It's fool-proof  : )
+
+    Created by: Olde7325 <https://github.com/Olde7325>
+*/}}
+
+{{define "response"}}
+    {{$author := userArg .author}}
+    {{$moderator := userArg .moderator}}
+    {{$embed := cembed "title" "Information" 
+        "description" (print .message)
+        "fields" (cslice
+            (sdict "name" "Responsible Moderator:" "value" (printf "<@%d> \n ID: `%[1]d`" $moderator.ID) "inline" true)
+            (sdict "name" "Status:" "value" .info "inline" true)
+            (sdict "name" "Reported User:" "value" (print .target))
+            (sdict "name" "Reason for Report:" "value" .reason)
+        )
+        "footer" (sdict "text" (print $moderator.String " • " (currentTime.Format "Mon 02 Jan 15:04:05")) "icon_url" ($moderator.AvatarURL "256"))
+    }}
+    {{sendMessage (toInt .discussion) (complexMessage "content" (print $author.Mention "News regarding your report:") "embed" $embed)}}
+{{end}}
+
+{{$conf := sdict (dbGet .Guild.ID "reportSettings").Value}}
+{{$disc := $conf.reportDiscussion}}
+{{$logs := $conf.reportLog}}
+{{if and (dbGet .User.ID "awaitMessage") (eq .Channel.ID $logs)}}
+    {{cancelScheduledUniqueCC .CCID (print .User.ID "_awaitMessage")}}
+    {{$execData := sdict (dbGet .User.ID "awaitMessage").Value}}
+    {{$data := sdict "message" (str .Message.Content) "moderator" .User.ID "discussion" $disc}}
+    {{range $k, $v := $execData}}{{$data.Set $k $v}}{{end}}
+    {{template "response" $data}}
+    {{deleteTrigger}}
+{{else if .ExecData}}
+    {{$data := sdict .ExecData}}
+    {{$data.Set "message" "\u200B"}}
+    {{$data.Set "moderator" .User "discussion" (str $disc)}}
+    {{template "response" $data}}
+    {{deleteTrigger}}
+{{end}}

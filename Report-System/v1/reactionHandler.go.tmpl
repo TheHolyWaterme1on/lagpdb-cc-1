@@ -1,0 +1,92 @@
+{{/*
+    This handy-dandy custom command-bundle allows a user to cancel their most recent report and utilizes
+    Reactions to make things easier for staff.
+    This custom command manages the reaction menu.
+    Make this in a seperate Reaction CC, due to its massive character count.
+    Remove this leading comment once you added this command.
+    Obligatory Trigger type and trigger: Reaction; added reactions only.
+
+    Created by: Olde7325 <https://github.com/Olde7325>
+*/}}
+
+
+{{/*ACTUAL CODE*/}}
+
+{{/* Functions; edit report embed */}}
+{{define "edit"}}
+    {{$rEmbed := .rembed}}
+    {{$rEmbed.Set "Fields" ((cslice.AppendSlice $rEmbed.Fields))}}
+    {{$emojis := cslice .emojis}}
+    {{if ne .menu "none"}}
+        {{$rEmbed.Fields.Set 0 (sdict "name" "Current State" "value" .state)}}
+        {{$rEmbed.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" .menu)}}
+    {{else}}
+        {{$rEmbed.Fields.Set (slice $rEmbed 0 5)}}
+        {{$rEmbed.Set "Footer" (sdict "text" (printf "Report closed! • Responsible Moderator: %s (ID: %d)" $.User.String $.User.ID) "icon_url" $.User.AvatarURL "256")}}
+    {{end}}
+    {{$rEmbed.Set "color" (toInt .color)}}
+    {{deleteAllMessageReactions .log .reportID}}
+    {{range $emojis}}
+        {{addReactions .}}
+    {{end}}
+    {{editMessage .log .reportID (complexMessageEdit "embed" $rEmbed)}}
+{{end}}
+
+{{/* Initialising stuff */}}
+{{$conf := sdict (dbGet 2000 "reportSettings").Value}}
+{{$disc := $conf.reportDiscussion}}
+{{$logs := $conf.reportLog}}
+
+{{/* Validating that it is a report message, the user a mod, parsing the author from description */}}
+{{$isMod := in (split (index (split (exec "viewperms") "\n") 2) ", ") "ManageMessages"}}
+{{if ($embed := (index .Reaction.Message.Embeds 0))}}
+    {{if and $isMod (reFind (toString $.User.ID) $embed.Footer.Text) $embed.Author $embed.Footer}}
+        {{$report := (index .Message.Embeds 0|structToSdict)}}
+        {{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
+        {{with $report}}
+            {{$author := (index (reFindAllSubmatches `\A<@!?(\d{17,19})>` .Description) 0 1|toInt|getMember).User}}
+            {{.Set "Footer" .Footer}}
+            {{.Set "Author" .Author}}
+            {{$editData := sdict "color" 0}}{{/* 'Empty' sdict as data to prevent errors */}}
+            {{if eq $.Reaction.Emoji.Name "❌"}}
+                {{if (reFind `(?i)request` (index $embed.Fields 5))}}
+                    {{$editData = sdict "color" 16711680 "state" "__Request denied.__" "menu" "Dismiss report with ❌, start investigation with 🛡️, or request more background information with ⚠️." "emojis" (cslice "❌" "🛡️" "⚠️")}}
+                {{else}}
+                    {{$editData = sdict "color" 65280 "state" "__Report dismissed.__" "menu" "Warn for `False report` with ❗, or close without any further action with 👌." "emojis" (cslice "❗" "👌")}}
+                {{end}}
+            {{else if eq $.Reaction.Emoji.Name "⚠️"}}
+                {{if (reFind `(?i)request` (index $embed.Fields 5))}}
+                    {{$editData = sdict "menu" "Dismiss request with ❌, or accept request __(and nullify report)__ with 👌." "emojis" (cslice "❗" "👌")}}
+                {{else}}
+                    {{$editData = sdict "menu" "Dismiss report with ❌ or start investigation with 🛡️." "emojis" (cslice "❌" "🛡️")}}
+                {{end}}
+                {{$editData.Set "state" "__More information requested.__"}}
+                {{$editData.Set "color" 255}}
+            {{else if eq $.Reaction.Emoji.Name "👌"}}
+                {{if (reFind `(?i)request` (index $embed.Fields 5))}}
+                    {{$editData = sdict "state" "__Request accepted, report nullified.__" "menu" "none"}}
+                {{else if (reFind `(?i)warn` (index $embed.Fields 5))}}
+                    {{$editData = sdict "state" "__Report dismissed, no further action taken.__" "menu" "none"}}
+                {{else}}
+                    {{$editData = sdict "state" "__Report resolved.__" "menu" "none"}}
+                {{end}}
+                {{$editData.Set "color" 65280}}
+                {{$editData.Set "emojis" (cslice "🏳️")}}
+            {{else if eq $.Reaction.Emoji.Name "🛡️"}}
+                {{$editData = sdict "color" 16776960 "state" "__Under investigation.__" "menu" "Dismiss with ❌ or resolve with 👌." "emojis" (cslice "❌" "👌")}}
+            {{else if eq $.Reaction.Emoji.Name "❗"}}
+                {{$editData = sdict "color" "state" "__Report dismissed, warned for false report.__" "menu" "none" "emojis" (cslice "🏳️")}}
+            {{end}}
+            {{$editData.Set "rembed" $report}}
+            {{$editData.Set "log" $logs}}
+            {{$editData.Set "reportID" .Message.ID}}
+            {{template "edit" $editData}}
+        {{end}}
+    {{else if and $isMod (eq .Reaction.Emoji.Name "🔐") (reFind "•" $embed.Footer.Text)}}
+        {{$report.Set "Footer" (sdict "text" (printf "Responsible Moderator: %s (ID %d)" .User.String .User.ID))}}
+        {{.User.Mention}}: You opened this report now - take good care of it.
+        {{deleteResponse}}
+    {{else}}
+        {{deleteMessageReaction nil .Message.ID .User.ID "🔐" "❌" "❗" "👌" "🛡️" "⚠️"}}
+    {{end}}
+{{end}}
