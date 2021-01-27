@@ -19,7 +19,7 @@ Did not set regex to match Server Prefix! {{deleteTrigger}}
 ```{{.Cmd}} <Message:ID> <Key:Text> <Reason:Text>```
 Not enough arguments passed.
 {{else}}
-    {{$s := sdict (dbGet 2000 "reportSettings").Value}}
+    {{$s := sdict (dbGet .Guild.ID "reportSettings").Value}}
     {{$rL := (toInt64 $s.reportLog)}}
     {{$rID := ((index .CmdArgs 0)|toInt64)}}
     {{$r := index (getMessage $rL $rID).Embeds 0|structToSdict}}
@@ -42,12 +42,12 @@ Your latest report was already cancelled!
                         {{.Footer.Set "Icon_URL" .Footer.IconURL}}
                         {{.Set "description" (print .Description (printf "\nCancellation of this report was requested. \n Reason: `%s`" $reason))}}
                         {{.Set "color" 16711935}}
-                        {{.Set "Fields" ((cslice).AppendSlice .Fields)}}{{.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" (printf "Deny request with 🚫, accept with ✅, or request more information with ⚠️."))}}
+                        {{.Set "Fields" ((cslice).AppendSlice .Fields)}}{{.Fields.Set 5 (sdict "name" "Reaction Menu Options" "value" (printf "Deny request with ❌, accept with 👌, or ask for more information with ⚠️."))}}
                     {{end}}
                     {{editMessage $rL $rID (complexMessageEdit "embed" $r)}}
                     Cancellation requested, have a nice day!
                     {{deleteAllMessageReactions $rL $rID}}
-                    {{addMessageReactions $rL $rID "🚫" "✅" "⚠️"}}
+                    {{addMessageReactions $rL $rID "❌" "👌" "⚠️"}}
                     {{dbSet .User.ID "key" "used"}}
                 {{end}}
             {{else}}
