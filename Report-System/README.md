@@ -11,9 +11,10 @@ Both versions add some more functionality to the native report command, such as 
 Add all custom commands in each respective folder if you wish to use them.  
 **The files are not interchangeable; If you want to upgrade, readd them one by one.**
 
-### Author
+### Author and License
 These Custom-Command packages were created by [Olde7325](https://github.com/Olde7325).
-The author does not take any responsibilty for bugs and other issues caused by altered code beyond the intended configuaration as described in the respective documentation.
+The author does not take any responsibilty for bugs and other issues caused by altered code beyond the intended configuaration as described in the respective documentation.  
+They are licensed under the AGPL-3.0 license.
 
 ### Setting Up
 Please visit the respective folders for a complete guide to setting this system up, you'll also find a complete list of each version's features there.
