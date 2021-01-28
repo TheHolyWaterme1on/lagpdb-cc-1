@@ -67,9 +67,9 @@ You can't report yourself, silly.{{deleteTrigger}}
                 (sdict "name" "Reported user" "value" (printf "<@%d> (ID %d)" $user.ID $user.ID))
                 (sdict "name" "Message Logs" "value" (printf "[last 250 messages](%s) \nTime - `%s`" $logs250 (currentTime.Format "Mon 02 Jan 15:04:05")))
                 (sdict "name" "History" "value" (print "```\n" (or $history "None recorded") "\n```"))
-                (sdict "name" "Reaction Menu Options" "value" (printf "\nOpen report with 🔐."))
+                (sdict "name" "Reaction Menu Options" "value" (printf "\nDismiss report with ❌, start investigation with 🛡️, or ask for more background information with ⚠️."))
             )
-            "footer" (sdict "text" "No moderator yet • Claim with any reaction")
+            "footer" (sdict "text" "No moderator yet • Claim by reacting with 🔐")
         }}
         {{$x := sendMessageRetID $REPORT_LOG $reportEmbed}}
         {{addMessageReactions $REPORT_LOG $x "🔐"}}

@@ -1,12 +1,6 @@
-# Report System
-These commands are **not** standalone. Add all the commands if you wish to use them.
+# Report System v1
 
-These CCs allow you to create a report system with the ability for users to request cancellation/nullification of their reports and add some functionalities for staff utilizing reactions.
-All neccessary information is arranged in an embed which is edited accordingly.
-
-Should you need further information because something is unclear, or want to report a bug, feel free to open an issue, or follow the invite on [my profile](https://github.com/Olde7325).
-
-# Table of Contents
+## Table of Contents
 <details>
 <summary>Table of Contents</summary>
 
@@ -15,23 +9,23 @@ Should you need further information because something is unclear, or want to rep
 * [Usage](#Usage)
     * [Interface](#Interface)
         * [Reaction Menu](#Reaction-Menu)
-        * [Colour Coding](#Colour-Coding)
-        * [Default Reaction Inferface](#Default-Reaction-Inferface)
-        * [Pending Cancellation Request](#Pending-Cancellation-Request)
+        * [Default Reaction Inferface](..#Default-Reaction-Inferface)
+        * [Pending Cancellation Request](..#Pending-Cancellation-Request)
         * [Notification Message](#Notification-Message)
-* [Acknowledgements](#Acknowledgements)
-* [Planned Features](#Planned-Features)
-* [Author](#Author)
+* [Acknowledgements](../#Acknowledgements)
+* [Planned Features](../#Planned-Features)
+* [Author](../#Author)
+
 </details>
 
-# Features
+## Features
 * Logging Channel for report messages
 * Cancellation requests
 * Report history
 * Reaction Menu
 * Notifications
 
-# Setting Up
+## Setting Up
 | ⚠ You need `Manage_Server` permission in order to run the setup command! |
 | --- |
 
@@ -54,70 +48,38 @@ The [reaction handler](reactionHandler.go.tmpl) needs a Reaction trigger with "A
 | ℹ Make sure to change `-` in both RegEx triggers to match YAGPDB's prefix in your server!<br/>It is also recommened to create a [command override](#Command-Override-Example) disabling the `report` command completely. |
 | --- |
 
-# Usage
-## Commands
+## Usage
+### Commands
 `-ru <User:Mention/ID> <Reason:Text>` - Sends the report. 
 
 `-cr <MessageID:Text> <Key:Text> <Reason:Text>` - Requests cancellation of the latest report. The key is given to the reporting user in a custom command DM.
 
-## Interface
+### Interface
 | ℹ Only members with `Manage_Messages` permission will be able to use the reaction menu. |
 | --- |
 
-### Reaction Menu
+#### Reaction Menu
 The bottom-most field in the embed will give you a short explanation on what the buttons do.
 Please take some time to read the intention behind a few options:
 
-**Dismissing a report:** Some call it "ignoring". Both is fine. Basically it tells the reporting user that their report has no ground to stand upon on.
-**Requesting information:** You can see it as a step before ignoring, in case the reported user is a known case, but the report reason is not a very substantive one.  
-**Starting investigation:** This one should be obvious. Looking into it, reading the logs, discussing with other staff, talking with the reported user, finding a solution.  
-**Resolving a report:** Used when the reported user was punished accordingly or the report turns out to be for a bagatelle.
+* **Opening a report:** In order to be able to interact with a report, it must be opened; First come, first serve - Only the moderator who opened the report can interact with it.
+* **Dismissing a report:** Some call it "ignoring". Both is fine. Basically it tells the reporting user that their report has no ground to stand upon on.
+* **Requesting information:** You can see it as a step before ignoring, in case the reported user is a known case, but the report reason is not a very substantive one.  
+* **Starting investigation:** This one should be obvious. Looking into it, reading the logs, discussing with other staff, talking with the reported user, finding a solution.  
+* **Resolving a report:** Used when the reported user was punished accordingly or the report turns out to be for a bagatelle.
 
 Of course, there are more options than just these four, however the missing ones are a fair bit clearer than these.
 
 | ✅ Once a report is closed, YAGPDB.xyz will add a white flag (🏳️) as reaction to signalize a closed report. |
 | --- |
 
-### Colour Coding
-Each state has its own colour, for one to make it easier on the eyes and also to make it easier for you and your staff team recognizing in what state each report is.
+#### Notification 
+![Notification](https://camo.githubusercontent.com/496484c0f00c479795c2b98817fcfddca431596bb8a398f01572e15560a8c998/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3736373737313731393732303633323335302f3739333130373437303939333538383235342f756e6b6e6f776e2e706e67)
 
-* ![#808080](https://cdn.discordapp.com/attachments/767771719720632350/793546124903317554/000000.png) Pending moderator review
-* ![#FF00FF](https://cdn.discordapp.com/attachments/767771719720632350/793546157316898857/000000.png) Pending cancellation request 
-* ![#FFFF00](https://cdn.discordapp.com/attachments/767771719720632350/793546178070446140/000000.png) Under investigation 
-* ![#0000FF](https://cdn.discordapp.com/attachments/767771719720632350/793546199532699678/000000.png) Information requested
-* ![#00FF00](https://cdn.discordapp.com/attachments/767771719720632350/793546218068115486/000000.png) Report resolved 
-* ![#FF0000](https://cdn.discordapp.com/attachments/767771719720632350/793546237483024394/000000.png) Cancellation request denied
+#### Screenshots
 
-
-### Default Reaction Inferface
-![Default Interface Image](https://cdn.discordapp.com/attachments/767771719720632350/787880054238740530/unknown.png)
-
-### Pending Cancellation Request
-![Cancellation Inferface Image](https://cdn.discordapp.com/attachments/767771719720632350/787880387141304350/unknown.png)
-
-***Note:*** Upon the first report(s) there will not be any report history. The images are purely meant as examples and do not necessarily represent the reality.
-
-### Notification Message
-![Notification Example](https://cdn.discordapp.com/attachments/767771719720632350/793107470993588254/unknown.png)
-
-# Acknowledgements
-I also want to thank [Devonte](https://github.com/NaruDevnote), known on Discord as `Devonte#0745`, for helping me developing and fine-tuning this custom command set.
-
-# Planned Features
-| ℹ These features are planned and still under development. To request new features, please follow the link on my profile. |
-| --- |
-
-- [ ] Custom message in notification.
-- [ ] Moderation menu to execute on the reported user for super-duper quick access.
-
-# Author
-This Custom-Command package was created by [Olde7325](https://github.com/Olde7325).
-The author does not take any responsibilty for bugs and other issues caused by altered code beyond the intended configuaration as described [further up](#Setting-Up).
-
-### Screenshots
-
-#### Command Override Example
+##### Command Override Example
 ![Command Override](https://cdn.discordapp.com/attachments/767771719720632350/795328377158369330/unknown.png)
 
-#### Disabled Report Command
+##### Disabled Report Command
 ![Disable Report Cmd](https://cdn.discordapp.com/attachments/767771719720632350/795330583303028746/unknown.png)

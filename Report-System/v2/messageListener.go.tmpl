@@ -34,12 +34,13 @@
     {{$execData := sdict (dbGet .User.ID "awaitMessage").Value}}
     {{$data := sdict "message" (str .Message.Content) "moderator" .User.ID "discussion" $disc}}
     {{range $k, $v := $execData}}{{$data.Set $k $v}}{{end}}
+        {{deleteTrigger}}
     {{template "response" $data}}
-    {{deleteTrigger}}
 {{else if .ExecData}}
     {{$data := sdict .ExecData}}
     {{$data.Set "message" "\u200B"}}
-    {{$data.Set "moderator" .User "discussion" (str $disc)}}
-    {{template "response" $data}}
+    {{$data.Set "moderator" .User}}
+    {{$data.Set "discussion" (str $disc)}}
     {{deleteTrigger}}
+    {{template "response" $data}}
 {{end}}
