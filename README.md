@@ -6,8 +6,7 @@ This is not an official repository, however I plan on PRing some CCs to [the off
 When you found your way here, I assume that you already have some basic CC knowledge (how to add them, you maybe even wrote your first basic ones). Yet I still try to make it as clear as possible how to use them. If you have any improvements to suggest, or need help, feel free to either open an issue, a PR, or [join my server](https://discord.gg/tFhxypKcvm) 😉.
 
 ## Something broke?
-If something broke (or seems as if), [join my server](https://discord.gg/tFhxypKcvm) and ping me, I will be there as soon as possible.
-You must read and agree to the rules in order to be able to type.  
+If something broke (or seems as if), join my server or the [yagpdb support server](https://discord.com/invite/0vYlUK2XBKldPSMY) (you must read the faq in order to be able to write) and ping me, I will be there as soon as possible.
 Provide screenshots of the input and the error message, that way I can pinpoint it down faster!
 Did you delete the error message? Log the channel and try to retrieve it back, or look at the settings of the erroring custom command, you'll find the latest error there.
 
