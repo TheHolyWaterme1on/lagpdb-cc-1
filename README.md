@@ -7,6 +7,7 @@ When you found your way here, I assume that you already have some basic CC knowl
 ### Something broke?
 If something broke (or seems as if), [join my server](https://discord.gg/tFhxypKcvm "Server invite") and ping me, I will be there as soon as possible.
 You must read and agree to the rules in order to be able to send messages.  
+
 Provide screenshots of the input and the error message, that way I can pinpoint it down faster!
 Did you delete the error message? Log the channel and try to retrieve it back, or look at the settings of the erroring custom command, you'll find the latest error there.
 
