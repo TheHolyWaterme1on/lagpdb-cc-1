@@ -21,12 +21,12 @@ Navigate to your [control panel](https://yagpdb.xyz/manage "YAGPDB.xyz control p
 First off, navigate on your control panel to **Tools & Utilities > Moderation** and select the **General** tab. Find the switch labelled **Enable report command?** and confirm that it is off (it will turn red when that is the case). For a visual reference, take a look at the following screenshot:
 
 ###### Disabled report command:
-![disabled report command](https://i.imgur.com/9VW7BuS)
+![disabled report command](https://i.imgur.com/9VW7BuS.png)
 
 Now navigate to **Core > Command settings** and select the **Global** tab. We are going to create a new command override affecting the report command. Select this command in the dropdown and hit the switch **Enable specified commands?** so that it turns red. You'll find a visual reference as the following screenshot:
 
 ###### Command override:
-![command override](https://i.imgur.com/Qn9VoZ0)
+![command override](https://i.imgur.com/BnJSZE3.png)
 
 ---
 | ℹ If you don't know how to add custom commands, or need a refresher, please follow [this tutorial](https://learn.yagpdb.xyz/the-custom-command-interface "How to add a custom command"). |
@@ -51,17 +51,17 @@ The following section showcases various notes and screenshots related to this cu
 ###### Default interface
 The message each report starts with. No cancellation request, no responsible moderator.
 
-![default message](https://i.imgur.com/a/mofgKhl.png)
+![default message](https://i.imgur.com/tkHJmr7.png)
 
 ###### Pending request
 This is how a report looks like when the reporting user requested a cancellation.
 
-![report with cancellation](https://i.imgur.com/f4NaZsI.png)
+![report with cancellation](https://i.imgur.com/QMUaV6I.png)
 
 ###### Notification
 The message that gets sent along certain actions.
 
-![example notification](https://i.imgur.com/UlXUej3.png)
+![example notification](https://i.imgur.com/ARLzkWZ.png)
 
 #### Colour 
 There are several states a report can be in, and each one has an individual colour. This will make it easier for you and your staff to see which report needs the most attention (also everybody likes a little colour):
