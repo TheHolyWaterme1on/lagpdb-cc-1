@@ -16,7 +16,7 @@
 {{$args := parseArgs 1 "```Bookmark <Message:Text>```\nNot enough arguments passed." (carg "string" "Message")}}
 {{$note := $args.Get 0}}
 {{$link := (printf "https://discord.com/channels/%d/%d/%d" .Guild.ID .Channel.ID .Message.ID)}}
-{{(cembed
+{{$embed := (cembed
     "title" "Bookmark"
     "description" "You asked me to bookmark this for you:"
     "fields" (cslice
