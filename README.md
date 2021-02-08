@@ -15,6 +15,6 @@ Did you delete the error message? Log the channel and try to retrieve it back, o
 Nothing much to say, actually. Whenever I think a custom command of mine is worth sharing, you'll find it here pretty much soon after implementation on my server. I follow the git flow branching model and still call it master.
 
 ### Author and License
-Created and maintained by [Olde7325](https://github.com/Olde7325 "Olde7325's profile on GitHub").
+Created and maintained by [l-zeuch](https://github.com/l-zeuch "l-zeuch's profile on GitHub").
 
 This repository is licensed under the GNU Affero General Public License v3.0.
