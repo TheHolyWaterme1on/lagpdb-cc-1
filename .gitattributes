@@ -1,0 +1,2 @@
+*.go.tmpl linguist-detectable=false
+*.go linguist-detectable=true
