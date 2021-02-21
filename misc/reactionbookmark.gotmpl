@@ -1,0 +1,29 @@
+{{/* 
+     This command will DM the link to a message that the user can bookmark with the 🔖 emoji
+     
+     Usage:
+        React to a message with 🔖
+     
+     Trigger type: Reaction (added only)
+     
+     Author: TheHolyWatermelon
+*/}}
+
+{{/* Configuration */}}
+{{$channel := .Reaction.ChannelID}}
+{{$message := .Reaction.MessageID}}
+{{$guild := .Reaction.GuildID}}
+{{$author := (print .ReactionMessage.Author.Mention)}}
+
+{{/* Actual Code */}}
+{{if (eq .Reaction.Emoji.Name "🔖")}}
+{{$link := (printf "https://discord.com/channels/%d/%d/%d" $guild $channel $message)}}
+{{$embed := (cembed
+        "title" "Bookmark"
+        "description" "You asked me to bookmark this for you:"
+        "fields" (cslice
+            (sdict "name" "Info:" "value" (print "Author " $author (printf "\nChannel: <#%d>\nSource: [Jump!](%s)" .Channel.ID $link)) "inline" true)
+                ))
+    }}
+{{sendDM $embed}}
+{{end}}
