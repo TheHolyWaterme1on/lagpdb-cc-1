@@ -63,6 +63,9 @@ After you've followed these steps, you are now ready for a PR!  Take a look at [
 If you're PRing one single command, all you have to do is adding it in the appropiate folder. If that folder does not exist, feel free to add that as well.
 
 PRing a system of commands requires a few more steps: Find an appropiate folder and create a new folder containing only your custom commands plus a README.md documenting your custom commands.
+
+Please make all of your PRs against the `dev` branch.
+
 You can ignore the file extension, I'll take care of that!
 
 Thanks for contributing!
