@@ -58,7 +58,7 @@ Your code should be relatively readable. This of course does not mean it has to 
 Should it be too long, don't worry - I'll run a [minifier ](https://jo3-l.github.io/cc-minifier/) (made by [Joe L.](https://github.com/jo3-l)) on it, as that does a fairly good job getting it down to length.
 
 ## How do I request for my code to be added?
-After you've followed these steps, you are now ready for a PR!  Take a look at [this article](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request9 if you aren't quite familiar with PRs or need a refresher. We have a PR template in place that we recommend you follow.
+After you've followed these steps, you are now ready for a PR!  Take a look at [this article](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) if you aren't quite familiar with PRs or need a refresher. We have a PR template in place that we recommend you follow.
 
 If you're PRing one single command, all you have to do is adding it in the appropiate folder. If that folder does not exist, feel free to add that as well.
 
